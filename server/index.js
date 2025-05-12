@@ -9,4 +9,6 @@ app.use(cors());
 app.get("/compress-image", compressImage);
 app.get("/generate-qr", generateQR);
 
+app.use(express.static('public'));
+
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
