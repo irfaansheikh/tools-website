@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -17,5 +17,61 @@
   <div id="output"></div>
 
   <script src="../src/js/main.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tools Website</title>
+</head>
+<body>
+  <h1>Welcome to Tools Website</h1>
+
+  <!-- Image Compression Form -->
+  <h2>Compress Image</h2>
+  <form id="compress-form" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required />
+    <button type="submit">Compress Image</button>
+  </form>
+  <div id="compress-result"></div>
+
+  <!-- QR Code Generation Form -->
+  <h2>Generate QR Code</h2>
+  <form id="qr-form">
+    <input type="text" name="url" placeholder="Enter URL" required />
+    <button type="submit">Generate QR Code</button>
+  </form>
+  <div id="qr-result"></div>
+
+  <script>
+    // Handle image compression form submission
+    document.getElementById('compress-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      const response = await fetch('/compress-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.text();
+      document.getElementById('compress-result').innerHTML = result;
+    });
+
+    // Handle QR code generation form submission
+    document.getElementById('qr-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const url = form.url.value;
+
+      const response = await fetch(`/generate-qr?url=${encodeURIComponent(url)}`);
+      const result = await response.text();
+      document.getElementById('qr-result').innerHTML = result;
+    });
+  </script>
 </body>
 </html>
