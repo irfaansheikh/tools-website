@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ultimate Tools - Tools</title>
-<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="./css/style.css" />
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   rel="stylesheet"/>
@@ -34,6 +34,7 @@
 
 <main>
   <nav class="main-tabs">
+  <div class="tab-row">
     <button class="tab-btn active" data-cat="image-tools">
       <i class="fas fa-image"></i> Image Tools
     </button>
@@ -52,6 +53,9 @@
     <button class="tab-btn" data-cat="text-tools">
       <i class="fas fa-font"></i> Text Tools
     </button>
+  </div>
+
+  <div class="tab-row">
     <button class="tab-btn" data-cat="developer-tools">
       <i class="fas fa-code"></i> Developer Tools
     </button>
@@ -67,7 +71,11 @@
     <button class="tab-btn" data-cat="other-tools">
       <i class="fas fa-ellipsis-h"></i> Other Tools
     </button>
-  </nav>
+    <button class="tab-btn" data-cat="other-tools">
+      <i class="fas fa-ellipsis-h"></i> Sample
+    </button>
+  </div>
+</nav>
 
   <section class="category-sections">
    
@@ -94,7 +102,7 @@
 <div id="pdf-tools" class="category-content">
   <h2>PDF Tools</h2>
   <div class="tool-list">
-    <a class="tool-btn" href="tools/compress-pdf.html" target="_blank">Compress PDF</a>
+    <a class="tool-btn" href="tools/pdf-compressor.html" target="_blank">Compress PDF</a>
     <a class="tool-btn" href="tools/convert-pdf.html" target="_blank">Convert PDF</a>
     <a class="tool-btn" href="tools/pdf-converter.html" target="_blank">PDF Converter</a>
     <a class="tool-btn" href="tools/ai-pdf.html" target="_blank">AI PDF</a>
@@ -276,6 +284,11 @@
 </div> <!-- closes #other-tools -->
 </section> <!-- ✅ closes .category-sections -->
 
-<script src="script.js"></script>
+<script src="./js/main.js"></script>
+<script src="./js/pdf-compressor.js"></script>
+<script src="./js/image-resizer.js"></script>
+<script src="./js/unit-converter.js"></script>
+
+
 </body>
 </html>

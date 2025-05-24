@@ -1,16 +1,19 @@
-// /js/pdf-compressor.js
-document.addEventListener("DOMContentLoaded", () => {
-  const uploadInput = document.getElementById("file-upload");
-  const compressButton = document.getElementById("compress-btn");
+document.addEventListener("DOMContentLoaded", function () {
+  const fileInput = document.getElementById("pdfInput");
+  const compressBtn = document.getElementById("compressBtn");
+  const output = document.getElementById("output");
 
-  compressButton.addEventListener("click", () => {
-    const file = uploadInput.files[0];
-    if (file) {
-      compressPDF(file);
+  compressBtn.addEventListener("click", function () {
+    const file = fileInput.files[0];
+    if (!file || file.type !== "application/pdf") {
+      output.textContent = "Please select a valid PDF file.";
+      return;
     }
-  });
 
-  function compressPDF(file) {
-    // Your compression logic
-  }
+    output.textContent = "Compressing (simulated)...";
+
+    setTimeout(() => {
+      output.textContent = `Compressed PDF: ${file.name}`;
+    }, 2000); // simulate compression
+  });
 });
