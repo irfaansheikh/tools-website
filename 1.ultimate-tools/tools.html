@@ -47,10 +47,22 @@
       <i class="fas fa-exchange-alt"></i> Converters
     </button>
     <button class="tab-btn" data-cat="qrgenerator">
-      <i class="fas fa-flask"></i> QR Generator
+      <i class="fas fa-qrcode"></i> QR Generator
     </button>
-    <button class="tab-btn" data-cat="sample2">
-      <i class="fas fa-flask"></i> Sample2
+    <button class="tab-btn" data-cat="text-tools">
+      <i class="fas fa-font"></i> Text Tools
+    </button>
+    <button class="tab-btn" data-cat="developer-tools">
+      <i class="fas fa-code"></i> Developer Tools
+    </button>
+    <button class="tab-btn" data-cat="ai-tools">
+      <i class="fas fa-robot"></i> AI Tools
+    </button>
+    <button class="tab-btn" data-cat="seo-tools">
+      <i class="fas fa-globe"></i> SEO & Web Tools
+    </button>
+    <button class="tab-btn" data-cat="file-tools">
+      <i class="fas fa-file-archive"></i> File Tools
     </button>
     <button class="tab-btn" data-cat="other-tools">
       <i class="fas fa-ellipsis-h"></i> Other Tools
@@ -58,9 +70,7 @@
   </nav>
 
   <section class="category-sections">
-    <!-- Same category content as before: all your tools inside divs -->
-    <!-- (For brevity, paste the exact same category divs from previous tools.html here) -->
-    <!-- Example for one category: -->
+   
     <div id="image-tools" class="category-content active">
   <h2>Image Tools</h2>
   <div class="tool-list">
@@ -69,9 +79,18 @@
     <a class="tool-btn" href="tools/jpeg-compressor.html" target="_blank">JPEG Image Compressor</a>
     <a class="tool-btn" href="tools/image-resizer.html" target="_blank">Image Resizer</a>
     <a class="tool-btn" href="tools/all-in-one-compressor.html" target="_blank">All-in-One Image Compressor</a>
-  </div>
+    <a class="tool-btn" href="image-to-text.html">Image to Text (OCR)</a>
+    <a class="tool-btn" href="heic-to-jpg.html">Convert HEIC to JPG</a>
+    <a class="tool-btn" href="image-to-pdf.html">Image to PDF</a>
+    <a class="tool-btn" href="background-remover.html">Background Remover</a>
+    <a class="tool-btn" href="image-enhancer.html">Image Enhancer (AI upscale)</a>
+    <a class="tool-btn" href="color-picker.html">Image Color Picker</a>
+    <a class="tool-btn" href="image-metadata-viewer.html">Image Metadata Viewer</a>
+    <a class="tool-btn" href="add-watermark.html">Add Watermark to Image</a>
+</div>
 </div>
 
+  <!-- PDF Tools -->
 <div id="pdf-tools" class="category-content">
   <h2>PDF Tools</h2>
   <div class="tool-list">
@@ -112,60 +131,136 @@
     <a class="tool-btn" href="tools/protect-pdf.html" target="_blank">Protect PDF</a>
     <a class="tool-btn" href="tools/flatten-pdf.html" target="_blank">Flatten PDF</a>
     <a class="tool-btn" href="tools/scan-pdf.html" target="_blank">Scan PDF</a>
+    <a class="tool-btn" href="tools/pdf-form-filler.html" target="_blank">PDF Form Filler</a>
+    <a class="tool-btn" href="tools/bates-numbering.html" target="_blank">Bates Numbering</a>
+    <a class="tool-btn" href="tools/compare-pdfs.html" target="_blank">Compare PDFs</a>
+    <a class="tool-btn" href="tools/pdfa-converter.html" target="_blank">PDF/A Converter</a>
   </div>
 </div>
 
-    <div id="calculators" class="category-content">
-      <h2>Calculators</h2>
-      <div class="tool-list">
-      <button class="tool-btn" data-tool="Fiverr Fee & PayPal Calculator">Fiverr Fee & PayPal Calculator</button>
-      <button class="tool-btn" data-tool="SIP & Lumpsum Calculator">SIP & Lumpsum Calculator</button>
-
-      <button class="tool-btn" data-tool="AdSense Revenue Calculator">AdSense Revenue Calculator</button>
+<div id="calculators" class="category-content">
+  <h2>Calculators</h2>
+  <div class="tool-list">
+      <a class="tool-btn" href="tools/fiverr-paypal-calculator.html" target="_blank">Fiverr Fee & PayPal Calculator</a>
+      <a class="tool-btn" href="tools/SIP & Lumpsum Calculator">SIP & Lumpsum Calculator</a>
+      <a class="tool-btn" href="tools/AdSense Revenue Calculator">AdSense Revenue Calculator</a>
       <a class="tool-btn" href="tools/simple-interest.html" target="_blank">Simple & Compound Interest Calculator</a>
-      <!-- <button class="tool-btn" data-tool="Simple & Compound Interest Calculator">Simple & Compound Interest Calculator</button> -->
-      <button class="tool-btn" data-tool="Advanced PPF Calculator">Advanced PPF Calculator</button>
-    </div>
-    </div>
+      <a class="tool-btn" href="tools/Advanced PPF Calculator">Advanced PPF Calculator</a>
+      <a class="tool-btn" href="tools/bmi-calculator.html" target="_blank">BMI Calculator</a>
+      <a class="tool-btn" href="tools/loan-emi-calculator.html" target="_blank">Loan EMI Calculator</a>
+      <a class="tool-btn" href="tools/tax-calculator.html" target="_blank">Tax Calculator</a>
+      <a class="tool-btn" href="tools/gst-vat-calculator.html" target="_blank">GST/VAT Calculator</a>
+      <a class="tool-btn" href="tools/unit-price-calculator.html" target="_blank">Unit Price Calculator</a>
+      <a class="tool-btn" href="tools/age-calculator.html" target="_blank">Age Calculator</a>
+      <a class="tool-btn" href="tools/pregnancy-calculator.html" target="_blank">Pregnancy Calculator</a>
+      <a class="tool-btn" href="tools/periods-calculator.html" target="_blank">Periods Day Calculator</a>
+      <a class="tool-btn" href="tools/date-calculator.html" target="_blank">Date Calculator (Add/Subtract)</a>
+  </div>
+</div>
 
-    <div id="converters" class="category-content">
-      <h2>Converters</h2>
-      <div class="tool-list">
-        <a class="tool-btn" href="tools/common-converters.html" target="_blank">Common Converters</a>
-        <a class="tool-btn" href="tools/length-converter.html" target="_blank">Length Converter</a>
-        <a class="tool-btn" href="tools/weight-and-mass-converter.html" target="_blank">Weight and Mass Converter</a>
-        <a class="tool-btn" href="tools/volume-converter.html" target="_blank">Volume Converter</a>
-        <a class="tool-btn" href="tools/temperature-converter.html" target="_blank">Temperature Converter</a>
-        <a class="tool-btn" href="tools/area-converter.html" target="_blank">Area Converter</a>
-        <a class="tool-btn" href="tools/pressure-converter.html" target="_blank">Pressure Converter</a>
-        <a class="tool-btn" href="tools/energy-converter.html" target="_blank">Energy Converter</a>
-        <a class="tool-btn" href="tools/power-converter.html" target="_blank">Power Converter</a>
-        <a class="tool-btn" href="tools/force-converter.html" target="_blank">Force Converter</a>
-        <a class="tool-btn" href="tools/time-converter.html" target="_blank">Time Converter</a>
-        <a class="tool-btn" href="tools/speed-converter.html" target="_blank">Speed Converter</a>
-        <a class="tool-btn" href="tools/angle-converter.html" target="_blank">Angle Converter</a>
-        <a class="tool-btn" href="tools/fuel-consumption-converter.html" target="_blank">Fuel Consumption Converter</a>
-        <a class="tool-btn" href="tools/numbers-converter.html" target="_blank">Numbers Converter</a>
-        <a class="tool-btn" href="tools/data-storage-converter.html" target="_blank">Data Storage Converter</a>
-        <a class="tool-btn" href="tools/volume-dry-converter.html" target="_blank">Volume - Dry Converter</a>
-        <a class="tool-btn" href="tools/currency-converter.html" target="_blank">Currency Converter</a>
-        <a class="tool-btn" href="tools/case-converter.html" target="_blank">Case Converter</a>
-    </div>
-    </div>
-    <div id="qrgenerator" class="category-content">
-      <h2>QR Generator</h2>
-      <div class="tool-list">
-      <a class="tool-btn" href="tools/qr-generator.html" target="_blank">URL to QR Code Generator</a>
-    </div>
-    </div>
+<div id="converters" class="category-content">
+  <h2>Converters</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/common-converters.html" target="_blank">Common Converters</a>
+    <a class="tool-btn" href="tools/length-converter.html" target="_blank">Length Converter</a>
+    <a class="tool-btn" href="tools/weight-and-mass-converter.html" target="_blank">Weight and Mass Converter</a>
+    <a class="tool-btn" href="tools/volume-converter.html" target="_blank">Volume Converter</a>
+    <a class="tool-btn" href="tools/temperature-converter.html" target="_blank">Temperature Converter</a>
+    <a class="tool-btn" href="tools/area-converter.html" target="_blank">Area Converter</a>
+    <a class="tool-btn" href="tools/pressure-converter.html" target="_blank">Pressure Converter</a>
+    <a class="tool-btn" href="tools/energy-converter.html" target="_blank">Energy Converter</a>
+    <a class="tool-btn" href="tools/power-converter.html" target="_blank">Power Converter</a>
+    <a class="tool-btn" href="tools/force-converter.html" target="_blank">Force Converter</a>
+    <a class="tool-btn" href="tools/time-converter.html" target="_blank">Time Converter</a>
+    <a class="tool-btn" href="tools/speed-converter.html" target="_blank">Speed Converter</a>
+    <a class="tool-btn" href="tools/angle-converter.html" target="_blank">Angle Converter</a>
+    <a class="tool-btn" href="tools/fuel-consumption-converter.html" target="_blank">Fuel Consumption Converter</a>
+    <a class="tool-btn" href="tools/numbers-converter.html" target="_blank">Numbers Converter</a>
+    <a class="tool-btn" href="tools/data-storage-converter.html" target="_blank">Data Storage Converter</a>
+    <a class="tool-btn" href="tools/volume-dry-converter.html" target="_blank">Volume - Dry Converter</a>
+    <a class="tool-btn" href="tools/currency-converter.html" target="_blank">Currency Converter</a>
+    <a class="tool-btn" href="tools/case-converter.html" target="_blank">Case Converter</a>
+    <a class="tool-btn" href="tools/binary-hex-decimal.html" target="_blank">Binary/Hex/Decimal Converter</a>
+    <a class="tool-btn" href="tools/text-speech.html" target="_blank">Text to Speech / Speech to Text</a>
+    <a class="tool-btn" href="tools/color-code-converter.html" target="_blank">Color Code Converter</a>
+    <a class="tool-btn" href="tools/file-type-converter.html" target="_blank">File Type Converter</a>
+    <a class="tool-btn" href="tools/unit-converters.html" target="_blank">Unit Converters</a>
+    <a class="tool-btn" href="tools/digital-converters.html" target="_blank">Digital/Technical Converters</a>
+    <a class="tool-btn" href="tools/text-case-converters.html" target="_blank">Text & Case Converters</a>
+  </div>
+</div>
 
-        <div id="sample2" class="category-content">
-      <h2>Sample2</h2>
-      <div class="tool-list">
-      <a class="tool-btn" href="tools/samplec">Sample Tool C</button>
-      <a class="tool-btn" href="tools/sampled">Sample Tool D</button>
-    </div>
-    </div>
+<div id="qrgenerator" class="category-content">
+  <h2>QR Generator</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/text-to-qr.html" target="_blank">Text to QR</a>
+    <a class="tool-btn" href="tools/email-phone-qr.html" target="_blank">Email/Phone QR Generator</a>
+    <a class="tool-btn" href="tools/wifi-qr.html" target="_blank">WiFi QR Generator</a>
+    <a class="tool-btn" href="tools/vcard-qr.html" target="_blank">vCard (Contact) QR Generator</a>
+  </div>
+</div>
+
+<div id="text-tools" class="category-content">
+  <h2>Text Tools</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/text-summarizer.html" target="_blank">Text Summarizer</a>
+    <a class="tool-btn" href="tools/grammar-checker.html" target="_blank">Grammar & Spell Checker</a>
+    <a class="tool-btn" href="tools/plagiarism-checker.html" target="_blank">Plagiarism Checker</a>
+    <a class="tool-btn" href="tools/text-compare.html" target="_blank">Text Compare</a>
+    <a class="tool-btn" href="tools/word-counter.html" target="_blank">Word Counter</a>
+    <a class="tool-btn" href="tools/reverse-text.html" target="_blank">Reverse Text</a>
+    <a class="tool-btn" href="tools/remove-line-breaks.html" target="_blank">Remove Line Breaks</a>
+    <a class="tool-btn" href="tools/random-text-generator.html" target="_blank">Random Word/Sentence Generator</a>
+  </div>
+</div>
+
+<div id="developer-tools" class="category-content">
+  <h2>Developer Tools</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/json-formatter.html" target="_blank">JSON Formatter/Validator</a>
+    <a class="tool-btn" href="tools/base64-encoder.html" target="_blank">Base64 Encode/Decode</a>
+    <a class="tool-btn" href="tools/jwt-decoder.html" target="_blank">JWT Decoder</a>
+    <a class="tool-btn" href="tools/regex-tester.html" target="_blank">Regex Tester</a>
+    <a class="tool-btn" href="tools/markdown-previewer.html" target="_blank">Markdown Previewer</a>
+    <a class="tool-btn" href="tools/code-minifier.html" target="_blank">HTML/CSS/JS Minifier & Beautifier</a>
+    <a class="tool-btn" href="tools/uuid-generator.html" target="_blank">UUID Generator</a>
+    <a class="tool-btn" href="tools/qr-scanner.html" target="_blank">QR Code Scanner (Webcam)</a>
+  </div>
+</div>
+
+<div id="ai-tools" class="category-content">
+  <h2>AI Tools</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/ai-article-generator.html" target="_blank">AI Article Generator</a>
+    <a class="tool-btn" href="tools/ai-resume-builder.html" target="_blank">AI Resume Builder</a>
+    <a class="tool-btn" href="tools/ai-image-caption.html" target="_blank">AI Image Caption Generator</a>
+    <a class="tool-btn" href="tools/ai-translator.html" target="_blank">AI Translator</a>
+    <a class="tool-btn" href="tools/ai-chat-file.html" target="_blank">AI Chat with File</a>
+  </div>
+</div>
+
+<div id="seo-tools" class="category-content">
+  <h2>SEO & Web Tools</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/meta-tag-generator.html" target="_blank">Meta Tag Generator</a>
+    <a class="tool-btn" href="tools/robots-generator.html" target="_blank">Robots.txt Generator</a>
+    <a class="tool-btn" href="tools/sitemap-generator.html" target="_blank">Sitemap Generator</a>
+    <a class="tool-btn" href="tools/uptime-checker.html" target="_blank">Website Uptime Checker</a>
+    <a class="tool-btn" href="tools/ip-dns-lookup.html" target="_blank">IP / DNS Lookup</a>
+    <a class="tool-btn" href="tools/website-screenshot.html" target="_blank">Website Screenshot Tool</a>
+  </div>
+</div>
+
+<div id="file-tools" class="category-content">
+  <h2>File Tools</h2>
+  <div class="tool-list">
+    <a class="tool-btn" href="tools/zip-unzip.html" target="_blank">ZIP/Unzip Online</a>
+    <a class="tool-btn" href="tools/file-to-base64.html" target="_blank">File to Base64</a>
+    <a class="tool-btn" href="tools/compare-files.html" target="_blank">Compare Files</a>
+    <a class="tool-btn" href="tools/hash-generator.html" target="_blank">Hash Generator (MD5, SHA256)</a>
+  </div>
+</div>
+
 
     <div id="other-tools" class="category-content">
       <h2> Other Tools</h2>
@@ -177,20 +272,9 @@
       <a class="tool-btn" href="tools/terms-and-conditions-generator.html" target="_blank">Terms and Conditions Generator</a>
       <a class="tool-btn" href="tools/terabox-video-player.html" target="_blank">Terabox Video Player</a>
 
-    </div>
-    </div>
-
-
-
-
-    <!-- Paste all other category divs as in previous code -->
-  </section>
-
-  <section id="tool-display">
-    <h2>Select a tool to start</h2>
-    <p>Tool UI will appear here.</p>
-  </section>
-</main>
+</div> <!-- closes .tool-list for other-tools -->
+</div> <!-- closes #other-tools -->
+</section> <!-- ✅ closes .category-sections -->
 
 <script src="script.js"></script>
 </body>
