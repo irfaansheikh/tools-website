@@ -1,0 +1,202 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f0f2f5;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+  color: white;
+  padding: 20px 10px;
+}
+
+header h1 {
+  margin: 0 0 5px;
+}
+
+header p {
+  margin: 0;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.main-tabs {
+  display: flex;
+  background-color: #fff;
+  border-bottom: 3px solid #4b6cb7;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.main-tabs button {
+  padding: 14px 24px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+  border-bottom: 3px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.main-tabs button:hover {
+  color: #4b6cb7;
+}
+
+.main-tabs button.active {
+  color: #182848;
+  border-color: #182848;
+  font-weight: 600;
+}
+
+.category-sections {
+  max-width: 1000px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  padding: 20px;
+}
+
+.category-content {
+  display: none;
+}
+
+.category-content.active {
+  display: block;
+}
+
+.tool-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tool-btn {
+  background-color: #4b6cb7;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex: 1 1 180px;
+  max-width: 200px;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.tool-btn:hover {
+  background-color: #182848;
+}
+
+#tool-display {
+  max-width: 1000px;
+  margin: 20px auto 50px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+  min-height: 150px;
+  text-align: center;
+}
+
+#tool-display h2 {
+  margin-top: 0;
+  font-weight: 600;
+  color: #4b6cb7;
+}
+/* --- Header and Navigation --- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+  padding: 10px 20px;
+  color: white;
+}
+
+.site-header .logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.main-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: rgba(255 255 255 / 0.2);
+}
+
+.nav-btn.active {
+  background-color: white;
+  color: #182848;
+}
+
+/* --- Homepage content --- */
+.home-content {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 15px;
+  text-align: center;
+}
+
+.home-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5em;
+  color: #182848;
+}
+
+.home-content p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 1.5em;
+}
+
+.intro-section h2 {
+  font-size: 1.8rem;
+  color: #4b6cb7;
+}
+
+.intro-section p {
+  max-width: 700px;
+  margin: 10px auto 20px;
+  color: #444;
+  font-size: 1rem;
+}
+
+.cta-button {
+  background-color: #4b6cb7;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #182848;
+}

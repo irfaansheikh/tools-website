@@ -35,6 +35,8 @@ const upload = multer({ storage });
 
 // Serve static files from the public directory
 app.use(express.static('public'));
+app.use('/compressed', express.static(path.join(__dirname, '../compressed')));
+
 
 // Route to handle image upload and compression
 app.post('/compress-image', upload.single('image'), async (req, res) => {
@@ -52,12 +54,56 @@ app.post('/compress-image', upload.single('image'), async (req, res) => {
     // Delete the original uploaded file
     fs.unlinkSync(inputPath);
 
-    res.send(`Image compressed successfully. <a href="/${outputPath}">Download here</a>`);
+    // Redirect to the download route
+    res.redirect(`/download/${outputFilename}`);
   } catch (error) {
     console.error('Error during image compression:', error);
     res.status(500).send('Compression failed.');
   }
 });
+
+app.get('/download/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, '../compressed', filename);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('File not found:', err);
+      return res.status(404).send('File not found');
+    }
+
+    // Set headers to prompt download
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'image/jpeg'); // Adjust MIME type if necessary
+
+    // Create a read stream and pipe it to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+
+    fileStream.on('end', () => {
+      console.log('Download completed');
+    });
+
+    fileStream.on('error', (err) => {
+      console.error('Error during download:', err);
+      res.status(500).send('Error during download');
+    });
+  });
+});
+
+
+app.get('/download/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, '../compressed', filename);
+  res.download(filePath, filename, (err) => {
+    if (err) {
+      console.error('Error downloading file:', err);
+      res.status(500).send('Error downloading file.');
+    }
+  });
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
