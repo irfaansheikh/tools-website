@@ -1,0 +1,1 @@
+/* blog-search.js placeholder */
