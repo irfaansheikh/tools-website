@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <title>Blog</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog - Ultimate Tools</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/blog.css" />
 </head>
 <body>
-  <h1>Blog</h1>
+  <header class="site-header">
+    <div class="logo"><a href="index.html">Ultimate Tools</a></div>
+      <nav class="main-nav">
+    <a href="index.html" class="nav-btn">
+      <i class="fas fa-home"></i> Home </a>
+    <a href="tools.html" class="nav-btn">
+      <i class="fas fa-toolbox"></i> All Tools</a>
+  <a href="blog.html" class="nav-btn active">
+    <i class="fas fa-toolbox"></i> Blog</a>
+  <a href="about.html" class="nav-btn">
+    <i class="fas fa-toolbox"></i> About</a>
+  <a href="contact.html" class="nav-btn">
+    <i class="fas fa-toolbox"></i> Contact</a>
+  <a href="faq.html" class="nav-btn">
+    <i class="fas fa-toolbox"></i> FAQ</a>
+  <a href="tool-request.html" class="nav-btn">
+    <i class="fas fa-toolbox"></i>Request Tool</a>
+  <a href="changelog.html" class="nav-btn">
+    <i class="fas fa-toolbox"></i>Changelog</a>
+  <a href="sitemap.html" class="nav-btn">
+    <i class="fas fa-toolbox"></i>Sitemap</a>
+</nav>
+  </header>
+
+  <main class="blog-layout">
+    <aside class="sidebar">
+      <h3>Search</h3>
+      <input type="text" id="searchBar" placeholder="Search blogs..." />
+      <h3>Popular Categories</h3>
+      <ul><li>SEO</li><li>AI</li><li>Tools</li><li>Converters</li></ul>
+
+      <h3>Recent Posts</h3>
+      <ul><li><a href="#">Top 10 PDF Tools</a></li><li><a href="#">Image Optimizer</a></li></ul>
+
+      <h3>Older Posts</h3>
+      <ul><li><a href="#">Early Archive</a></li><li><a href="#">Tools Launch</a></li></ul>
+
+      <h3>Explore</h3>
+      <ul><li><a href="#">Newsletter</a></li><li><a href="#">Request a Tool</a></li></ul>
+    </aside>
+
+    <section class="blog-posts" id="blog-posts">
+      <!-- Blog tiles injected here via infinite scroll -->
+    </section>
+  </main>
+
+  <script src="js/blog-search.js"></script>
+  <script src="js/infinite-scroll.js"></script>
 </body>
 </html>

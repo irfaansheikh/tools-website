@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <title>Signup</title>
+  <meta charset="UTF-8" />
+  <title>Sign Up - Ultimate Tools</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"/>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  
 </head>
 <body>
-  <h1>Signup</h1>
+  <header class="site-header">
+    <div class="logo"><a href="index.html">Ultimate Tools</a></div>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tools.html">All Tools</a>
+      <a href="login.html">Sign In</a>
+    </nav>
+  </header>
+
+  <main class="form-container">
+    <h1>Create Your Account</h1>
+    <form>
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required />
+
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+
+      <label for="confirm">Confirm Password:</label>
+      <input type="password" id="confirm" required />
+
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Sign In</a></p>
+  </main>
 </body>
 </html>
