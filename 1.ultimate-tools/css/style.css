@@ -292,6 +292,153 @@ form button:hover {
   background-color: #182848;
 }
 
+.site-footer {
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.site-footer .footer-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footer-logo, .footer-links, .footer-social {
+  flex: 1 1 200px;
+}
+
+.footer-links a,
+.footer-social a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.footer-social a {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+footer.site-footer {
+  background-color: #182848;
+  color: #fff;
+  padding: 30px 20px;
+  font-size: 14px;
+}
+
+.site-footer a {
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+.site-footer {
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+  color: white;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer-logo {
+  flex: 1 1 250px;
+}
+
+.footer-logo img {
+  max-width: 120px;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.footer-columns {
+  display: flex;
+  gap: 30px;
+  flex: 2 1 500px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.footer-column h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.footer-column a {
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+.footer-social-area {
+  flex: 1 1 250px;
+}
+
+.footer-social {
+  margin-top: 15px;
+}
+
+.footer-social a {
+  color: white;
+  font-size: 26px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.newsletter-form input[type="email"] {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.newsletter-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #182848;
+  color: white;
+  cursor: pointer;
+}
+
+.newsletter-form button:hover {
+  background: #4b6cb7;
+}
+
 
 /*-----------------------------------------------------------
     11. Responsive
