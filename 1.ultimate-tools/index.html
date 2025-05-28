@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Home - Ultimate Tools</title>
 <link rel="stylesheet" href="./css/style.css" />
+<link rel="stylesheet" href="./css/footer.css" />
+
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   rel="stylesheet"/>
@@ -53,7 +55,7 @@
     </p>
   </section>
 </main>
-<footer class="site-footer">
+<!-- <footer class="site-footer">
   <div class="footer-content">
     <div class="footer-logo">
       <a href="index.html">
@@ -82,7 +84,7 @@
       <a href="#"><i class="fab fa-youtube"></i></a>
     </div>
   </div>
-</footer>
+</footer> -->
 
 
 
@@ -93,337 +95,15 @@
 <script src="./js/unit-converter.js"></script>
 
 
+<div id="footer-placeholder"></div>
+<script>
+  fetch("./partials/footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    });
+</script>
+
 </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ultimate Online Tools</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>🛠️ Ultimate Online Tools</h1>
-    <p>Your one-stop solution for quick & smart tasks</p>
-    <nav>
-      <ul class="navbar">
-        <li class="dropdown">Image Tools
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('image-converter')">Image Converter</a></li>
-            <li><a href="#" onclick="showTab('resize-20kb')">Resize Image to 20KB</a></li>
-            <li><a href="#" onclick="showTab('jpeg-compressor')">JPEG Compressor</a></li>
-            <li><a href="#" onclick="showTab('image-resizer')">Image Resizer</a></li>
-            <li><a href="#" onclick="showTab('all-in-one-compressor')">All-in-One Compressor</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">PDF Tools
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('compress-pdf')">Compress PDF</a></li>
-            <li><a href="#" onclick="showTab('pdf-to-word')">PDF to Word</a></li>
-            <li><a href="#" onclick="showTab('pdf-to-jpg')">PDF to JPG</a></li>
-            <li><a href="tools/compress-pdf.html" target="_blank">Compress PDF</a></li>
-            <li><a href="tools/pdf-converter.html" target="_blank">PDF Converter</a></li>
-            <li><a href="tools/ai-chat-pdf.html" target="_blank">Chat with PDF</a></li>
-            <li><a href="tools/pdf-summarizer.html" target="_blank">AI PDF Summarizer</a></li>
-            <li><a href="tools/pdf-translate.html" target="_blank">Translate PDF</a></li>
-            <li><a href="tools/pdf-question-gen.html" target="_blank">AI Question Generator</a></li>
-            <li><a href="tools/merge-pdf.html" target="_blank">Merge PDF</a></li>
-            <li><a href="tools/pdf-splitter.html" target="_blank">Split PDF</a></li>
-            <li><a href="tools/rotate-pdf.html" target="_blank">Rotate PDF</a></li>
-            <li><a href="tools/delete-pdf-pages.html" target="_blank">Delete PDF Pages</a></li>
-            <li><a href="tools/extract-pdf-pages.html" target="_blank">Extract PDF Pages</a></li>
-            <li><a href="tools/organize-pdf.html" target="_blank">Organize PDF</a></li>
-            <li><a href="tools/edit-pdf.html" target="_blank">Edit PDF</a></li>
-            <li><a href="tools/pdf-annotator.html" target="_blank">PDF Annotator</a></li>
-            <li><a href="tools/pdf-reader.html" target="_blank">PDF Reader</a></li>
-            <li><a href="tools/number-pdf-pages.html" target="_blank">Number Pages</a></li>
-            <li><a href="tools/crop-pdf.html" target="_blank">Crop PDF</a></li>
-            <li><a href="tools/redact-pdf.html" target="_blank">Redact PDF</a></li>
-            <li><a href="tools/watermark-pdf.html" target="_blank">Watermark PDF</a></li>
-            <li><a href="tools/pdf-to-word.html" target="_blank">PDF to Word</a></li>
-            <li><a href="tools/pdf-to-excel.html" target="_blank">PDF to Excel</a></li>
-            <li><a href="tools/pdf-to-ppt.html" target="_blank">PDF to PPT</a></li>
-            <li><a href="tools/pdf-to-jpg.html" target="_blank">PDF to JPG</a></li>
-            <li><a href="tools/word-to-pdf.html" target="_blank">Word to PDF</a></li>
-            <li><a href="tools/excel-to-pdf.html" target="_blank">Excel to PDF</a></li>
-            <li><a href="tools/ppt-to-pdf.html" target="_blank">PPT to PDF</a></li>
-            <li><a href="tools/jpg-to-pdf.html" target="_blank">JPG to PDF</a></li>
-            <li><a href="tools/pdf-ocr.html" target="_blank">PDF OCR</a></li>
-            <li><a href="tools/sign-pdf.html" target="_blank">Sign PDF</a></li>
-            <li><a href="tools/request-signatures.html" target="_blank">Request Signatures</a></li>
-            <li><a href="tools/unlock-pdf.html" target="_blank">Unlock PDF</a></li>
-            <li><a href="tools/protect-pdf.html" target="_blank">Protect PDF</a></li>
-            <li><a href="tools/flatten-pdf.html" target="_blank">Flatten PDF</a></li>
-            <li><a href="tools/scan-pdf.html" target="_blank">Scan PDF</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">Calculators
-          <ul class="dropdown-content">
-            <li><a href="tools/fiverr-paypal-calc.html" target="_blank">Fiverr & PayPal</a></li>
-            <li><a href="tools/sip-lumpsum-calc.html" target="_blank">SIP & Lumpsum</a></li>
-            <li><a href="tools/adsense-revenue.html" target="_blank">AdSense Revenue</a></li>
-            <li><a href="tools/interest-calc.html" target="_blank">Interest Calculator</a></li>
-            <li><a href="tools/ppf-calc.html" target="_blank">PPF Calculator</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">Calculators
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('fiverr-calc')">Fiverr & PayPal</a></li>
-            <li><a href="#" onclick="showTab('sip-calc')">SIP & Lumpsum</a></li>
-            <li><a href="#" onclick="showTab('adsense-calc')">AdSense Revenue</a></li>
-            <li><a href="#" onclick="showTab('interest-calc')">Interest Calculator</a></li>
-            <li><a href="#" onclick="showTab('ppf-calc')">PPF Calculator</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">Converters
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('length')">Length</a></li>
-            <li><a href="#" onclick="showTab('weight')">Weight</a></li>
-            <li><a href="#" onclick="showTab('volume')">Volume</a></li>
-            <li><a href="#" onclick="showTab('temperature')">Temperature</a></li>
-            <li><a href="#" onclick="showTab('area')">Area</a></li>
-            <li><a href="#" onclick="showTab('pressure')">Pressure</a></li>
-            <li><a href="#" onclick="showTab('energy')">Energy</a></li>
-            <li><a href="#" onclick="showTab('power')">Power</a></li>
-            <li><a href="#" onclick="showTab('force')">Force</a></li>
-            <li><a href="#" onclick="showTab('time')">Time</a></li>
-            <li><a href="#" onclick="showTab('speed')">Speed</a></li>
-            <li><a href="#" onclick="showTab('angle')">Angle</a></li>
-            <li><a href="#" onclick="showTab('fuel')">Fuel Consumption</a></li>
-            <li><a href="#" onclick="showTab('numbers')">Numbers</a></li>
-            <li><a href="#" onclick="showTab('data-storage')">Data Storage</a></li>
-            <li><a href="#" onclick="showTab('volume-dry')">Volume - Dry</a></li>
-            <li><a href="#" onclick="showTab('currency')">Currency</a></li>
-            <li><a href="#" onclick="showTab('case')">Case Converter</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">Sample1
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('sample-a')">Sample Tool A</a></li>
-            <li><a href="#" onclick="showTab('sample-b')">Sample Tool B</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">Sample2
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('sample-c')">Sample Tool C</a></li>
-            <li><a href="#" onclick="showTab('sample-d')">Sample Tool D</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">Other Tools
-          <ul class="dropdown-content">
-            <li><a href="#" onclick="showTab('qr')">QR Generator</a></li>
-            <li><a href="#" onclick="showTab('shortener')">URL Shortener</a></li>
-            <li><a href="#" onclick="showTab('article-prompt')">Article Prompt</a></li>
-            <li><a href="#" onclick="showTab('privacy-policy')">Privacy Policy</a></li>
-            <li><a href="#" onclick="showTab('terms')">Terms Generator</a></li>
-            <li><a href="#" onclick="showTab('terabox')">Terabox Player</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
-
-  <section class="tools-section">
-    <div id="length" class="tab-content">Length Converter Tool Goes Here</div>
-    <div id="weight" class="tab-content hidden">Weight Converter Tool Goes Here</div>
-    <div id="volume" class="tab-content hidden">Volume Converter Tool Goes Here</div>
-    <div id="temperature" class="tab-content hidden">Temperature Converter Tool Goes Here</div> -->
-    <!-- Add similar divs for each tab tool -->
- <!-- </section>
-
-  <footer>
-    <p>&copy; 2025 ToolsHub. All rights reserved.</p>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
-</html> -->
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>All-in-One Tools Website</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 0 20px;
-      background: #f9f9f9;
-      color: #333;
-    }
-    h1, h2 {
-      text-align: center;
-      color: #222;
-    }
-    nav {
-      margin-bottom: 40px;
-      text-align: center;
-    }
-    nav button {
-      margin: 0 10px;
-      padding: 10px 18px;
-      font-size: 16px;
-      cursor: pointer;
-      border: 2px solid #007bff;
-      background: white;
-      color: #007bff;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-    nav button:hover {
-      background: #007bff;
-      color: white;
-    }
-    section.tool {
-      display: none;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      margin-bottom: 40px;
-    }
-    section.tool.active {
-      display: block;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input[type="text"], input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button.action-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      background: #28a745;
-      color: white;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-    button.action-btn:hover {
-      background: #218838;
-    }
-    #qr-code canvas {
-      margin-top: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Welcome to Your All-in-One Tools Website</h1>
-
-  <nav>
-    <button onclick="showTool('qr')">QR Code Generator</button>
-    <button onclick="showTool('interest')">Simple Interest Calculator</button>
-  </nav>
-  QR Code Generator
-  <section id="qr" class="tool">
-    <h2>URL to QR Code Generator</h2>
-    <label for="url-input">Enter URL:</label>
-    <input type="text" id="url-input" placeholder="https://example.com" />
-    <button class="action-btn" onclick="generateQR()">Generate QR Code</button>
-    <div id="qr-code"></div>
-  </section>
-
-  Simple Interest Calculator
-  <section id="interest" class="tool">
-    <h2>Simple Interest Calculator</h2>
-    <label for="principal">Principal Amount (Rs.):</label>
-    <input type="number" id="principal" placeholder="10000" />
-
-    <label for="rate">Annual Interest Rate (%):</label>
-    <input type="number" id="rate" placeholder="5" />
-
-    <label for="time">Time Period (years):</label>
-    <input type="number" id="time" placeholder="3" />
-
-    <button class="action-btn" onclick="calculateInterest()">Calculate Interest</button>
-    <div class="result" id="interest-result"></div>
-  </section>
-
-  QR Code library
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
-  <script>
-    // Show only selected tool section
-    function showTool(toolId) {
-      document.querySelectorAll('section.tool').forEach(section => {
-        section.classList.remove('active');
-      });
-      document.getElementById(toolId).classList.add('active');
-    }
-
-    // Default to showing QR code tool on page load
-    showTool('qr');
-
-    // Generate QR code from URL input
-    function generateQR() {
-      const url = document.getElementById('url-input').value.trim();
-      const qrContainer = document.getElementById('qr-code');
-      qrContainer.innerHTML = ''; // clear previous qr
-
-      if (!url) {
-        alert('Please enter a URL');
-        return;
-      }
-
-      QRCode.toCanvas(url, { width: 200 }, function (error, canvas) {
-        if (error) {
-          alert('Error generating QR code');
-          console.error(error);
-          return;
-        }
-        qrContainer.appendChild(canvas);
-      });
-    }
-
-    // Calculate simple interest
-    function calculateInterest() {
-      const P = parseFloat(document.getElementById('principal').value);
-      const R = parseFloat(document.getElementById('rate').value);
-      const T = parseFloat(document.getElementById('time').value);
-      const resultDiv = document.getElementById('interest-result');
-
-      if (isNaN(P) || isNaN(R) || isNaN(T) || P <= 0 || R <= 0 || T <= 0) {
-        resultDiv.textContent = 'Please enter valid positive numbers for all fields.';
-        return;
-      }
-
-      const interest = (P * R * T) / 100;
-      const totalAmount = P + interest;
-
-      resultDiv.textContent = `Simple Interest: Rs.${interest.toFixed(2)} | Total Amount: Rs.${totalAmount.toFixed(2)}`;
-    }
-  </script>
-
-</body>
-</html> -->
 

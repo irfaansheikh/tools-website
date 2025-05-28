@@ -292,51 +292,122 @@ form button:hover {
   background-color: #182848;
 }
 
-.site-footer {
-  background: linear-gradient(90deg, #182848, #4b6cb7);
-  color: white;
-  padding: 30px 20px;
-  margin-top: 40px;
-  font-size: 14px;
-}
 
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 30px;
-  max-width: 1200px;
-  margin: auto;
-  align-items: center;
-  text-align: center;
+/*-----------------------------------------------------------
+    11. Responsive
+-------------------------------------------------------------*/
+@media only screen and (max-width: 1600px) and (min-width: 1450px) {
+  .work-info {
+    padding:10px;
+  }
 }
-
-.footer-logo img {
-  height: 50px;
-  margin-bottom: 10px;
+@media only screen and (max-width: 1450px) and (min-width: 1350px) {
+  .work-info {
+    padding:5px;
+  }
 }
-
-.footer-links,
-.footer-social {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
+@media only screen and (max-width: 1350px) and (min-width: 1200px) {
+  .work-info {
+    padding:2px;
+  }
+  .work-info p {
+    margin-bottom: 2px;
+  }
 }
-
-.footer-links a,
-.footer-social a {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s ease;
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (max-width: 1200px) {
+  div.cont{
+    width: 33.33333%;
+  }
 }
-
-.footer-links a:hover,
-.footer-social a:hover {
-  color: #ffdd57;
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 992px) {
+  .intro p {
+    padding: 0px 50px;
+  }
+  .service-box {
+    padding: 50px 110px 20px 110px;
+  }
+  .stats-box {
+    max-width: 300px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  .portfolio-logo {
+    display: none;
+  }
+  #filter {
+    margin-bottom: 50px;
+  }
+  .team-box {
+    margin: 0 auto;
+    margin-bottom: 30px;
+  }
+  .quote p:nth-child(2) {
+    float: none;
+  }
+  .quote-right p:nth-child(2) {
+    float: none;
+  }
+  .quote-right {
+    margin: 40px 0px 80px 0px;
+  }
+  footer {
+    text-align: center;
+  }
 }
-
-.footer-social i {
-  font-size: 18px;
+@media only screen and (max-width: 800px) and (min-width: 600px) {
+  .work-info {
+    padding:10px;
+  }
 }
-
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) and (min-width: 600px) {
+  #filter a {
+    margin: 0px 5px;
+  }
+  .work-info {
+    padding:2px;
+  }
+  .work-info p {
+    margin-bottom: 2px;
+  }
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px){
+  .service-box {
+    padding: 50px 50px 20px 50px;
+  }
+  div.cont{
+    width:100%;
+  }
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 500px){
+  .nav {
+    width: 100vw;
+    margin-right: -120vw;
+  }
+  .nav ul li {
+    padding: 20px 0px;
+  }
+  .open {
+    right: 120vw;
+  }
+  .open-btn {
+    right: 75vw;
+  }
+  .intro p {
+      padding: 0px 20px;
+  }
+  h5, .h5 {
+      padding: 0px 40px;
+  }
+  .office-info-box {
+    text-align: center;
+    padding: 30px;
+  }
+  .quote-bg-rect {
+    display: none;
+  }
+}

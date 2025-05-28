@@ -46,3 +46,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadPosts(); // Initial load
 });
+
