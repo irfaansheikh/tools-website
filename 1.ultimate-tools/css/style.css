@@ -292,5 +292,51 @@ form button:hover {
   background-color: #182848;
 }
 
+.site-footer {
+  background: linear-gradient(90deg, #182848, #4b6cb7);
+  color: white;
+  padding: 30px 20px;
+  margin-top: 40px;
+  font-size: 14px;
+}
 
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-logo img {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.footer-links,
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.footer-links a,
+.footer-social a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-social a:hover {
+  color: #ffdd57;
+}
+
+.footer-social i {
+  font-size: 18px;
+}
 
