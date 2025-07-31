@@ -1,35 +1,48 @@
+<!-- Email/Phone QR Generator -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Email Phone Qr | Ultimate Tools</title>
+  <title>Email/Phone QR Generator | Ultimate Tools</title>
   <link rel="stylesheet" href="../../style.css" />
 </head>
 <body class="qr-generator">
-  
-<header class="site-header">
-  <div class="logo"><a href='/' style='text-decoration: none; color: white;'><h1>Ultimate Tools</h1></a></div>
-  <nav class="main-nav">
-    <a href="/index.html" class="nav-btn">Home</a>
-    <a href="/tools.html" class="nav-btn">All Tools</a>
-  </nav>
-</header>
+  <header class="site-header">
+    <div class="logo"><a href="/" style="text-decoration: none; color: white;"><h1>Ultimate Tools</h1></a></div>
+    <nav class="main-nav">
+      <a href="/index.html" class="nav-btn">Home</a>
+      <a href="/tools.html" class="nav-btn">All Tools</a>
+    </nav>
+  </header>
 
   <main class="category-sections">
-    <h2>Email Phone Qr</h2>
-    <p>This is the <strong>Email Phone Qr</strong> tool page. You can implement its functionality here.</p>
-    
-<section class="tool-guide">
-  <h3>How to Use This Tool</h3>
-  <ol>
-    <li>Step 1: Read the description or instructions below.</li>
-    <li>Step 2: Fill in the form or upload your file if needed.</li>
-    <li>Step 3: Click the button to process your data.</li>
-    <li>Step 4: View or download the result instantly.</li>
-  </ol>
-</section>
+    <h2>Email/Phone QR Code Generator</h2>
 
+    <div style="text-align:center; margin-bottom: 20px;">
+      <input type="text" id="contactInfo" placeholder="Enter email or phone" style="width: 80%; max-width: 400px; padding: 10px; font-size: 16px;" />
+      <br><br>
+      <button onclick="generateQR()" style="padding: 10px 20px; background: #4b6cb7; color: white; border: none; border-radius: 4px;">Generate QR</button>
+    </div>
+
+    <div id="qrResult" style="text-align:center; margin-top: 20px;"></div>
+    <div id="downloadSection" style="text-align:center; margin-top: 20px; display: none;">
+      <a id="downloadBtn" href="#" download="contact-qr.png" style="padding: 10px 20px; background: #182848; color: white; border-radius: 4px; text-decoration: none;">Download QR Code</a>
+    </div>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    function generateQR() {
+      const input = document.getElementById("contactInfo").value.trim();
+      const qrContent = input.includes("@") ? `mailto:${input}` : `tel:${input}`;
+
+      QRCode.toDataURL(qrContent, { width: 256 }, function (err, url) {
+        document.getElementById("qrResult").innerHTML = `<img src="${url}" alt="QR Code" style="margin-top: 10px;"/>`;
+        document.getElementById("downloadBtn").href = url;
+        document.getElementById("downloadSection").style.display = "block";
+      });
+    }
+  </script>
 </body>
 </html>
