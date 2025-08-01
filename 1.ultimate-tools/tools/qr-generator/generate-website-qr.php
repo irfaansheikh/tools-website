@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['url'])) {
         }
 
         // Generate filename
-        $id = uniqid('w_');
+        $id = uniqid('website_');
         $filename = $dir . $id . '.png';
         $webPath = '../../tools/qr-generator/qrcodes/website/' . $id . '.png';
 

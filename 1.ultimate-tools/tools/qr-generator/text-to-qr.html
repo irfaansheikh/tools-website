@@ -1,80 +1,103 @@
+<!-- Text QR Generator -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Text To Qr | Ultimate Tools</title>
+  <title>Text to QR | Ultimate Tools</title>
   <link rel="stylesheet" href="../../style.css" />
 </head>
 <body class="qr-generator">
-  
-<header class="site-header">
-  <div class="logo"><a href='/' style='text-decoration: none; color: white;'><h1>Ultimate Tools</h1></a></div>
-  <nav class="main-nav">
-    <a href="/index.html" class="nav-btn">Home</a>
-    <a href="/tools.html" class="nav-btn">All Tools</a>
-  </nav>
-</header>
+  <!-- <base href="/1.ultimate-tools/tools/qr-generator/"> -->
+  <header class="site-header">
+    <div class="logo">
+      <a href='/' style='text-decoration: none; color: white;'>
+        <h1>Ultimate Tools</h1>
+      </a>
+    </div>
+    <nav class="main-nav">
+      <a href="/index.html" class="nav-btn">Home</a>
+      <a href="/tools.html" class="nav-btn">All Tools</a>
+    </nav>
+  </header>
 
   <main class="category-sections">
-  <h2>Text to QR Code Generator</h2>
-  <p>Enter any text, URL, or message below to generate a QR code you can scan or download.</p>
+    <h2>Text to QR Code Generator</h2>
+    <p>Enter any text, URL, or message below to generate a QR code you can scan or download.</p>
 
-  <div style="text-align:center; margin-bottom: 20px;">
-    <input
-      type="text"
-      id="qrText"
-      placeholder="Enter text or URL"
-      style="width: 80%; max-width: 400px; padding: 10px; font-size: 16px;"
-    />
-    <br><br>
-    <button onclick="generateQR()" style="padding: 10px 20px; background: #4b6cb7; color: white; border: none; border-radius: 4px;">Generate QR</button>
-  </div>
+    <div style="text-align:center; margin-bottom: 20px;">
+      <form method="POST" action="generate-text-qr.php">
+        <input type="text" name="qrtext" placeholder="Enter text or URL" style="width: 80%; max-width: 400px; padding: 10px; font-size: 16px;" required />
+        <br><br>
+        <button type="submit" style="padding: 10px 20px; background: #4b6cb7; color: white; border: none; border-radius: 4px;">Generate QR</button>
+      </form>
+    </div>
 
-  <div id="qrResult" style="text-align:center; margin-top: 20px;"></div>
+    <div id="qrResult" style="text-align:center; margin-top: 20px;">
 
-  <div id="downloadSection" style="text-align:center; margin-top: 20px; display: none;">
-    <a id="downloadBtn" href="#" download="qr-code.png" style="padding: 10px 20px; background: #182848; color: white; border-radius: 4px; text-decoration: none;">Download QR Code</a>
-  </div>
+    </div>
 
-  <section class="tool-guide">
-    <h3>How to Use This Tool</h3>
-    <ol>
-      <li>Enter any text, URL, or message in the input box.</li>
-      <li>Click “Generate QR” to see the live QR preview.</li>
-      <li>Click “Download QR Code” to save the image.</li>
-    </ol>
-  </section>
-</main>
+    <div id="downloadSection" style="text-align:center; margin-top: 20px; display: none;">
+      <a id="downloadBtn" href="#" download="textQR.png" style="padding: 10px 20px; background: #182848; color: white; border-radius: 4px; text-decoration: none;">Download QR Code</a>
+    </div>
 
-<!-- QR Code Generator Script -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<script>
-  function generateQR() {
-    const text = document.getElementById("qrText").value.trim();
-    const resultDiv = document.getElementById("qrResult");
-    const downloadLink = document.getElementById("downloadBtn");
-    const downloadSection = document.getElementById("downloadSection");
+    <section class="tool-guide">
+      <h3>How to Use This Tool</h3>
+      <ol>
+        <li>Enter any text, URL, or message in the input box.</li>
+        <li>Click “Generate QR” to create and view the QR code.</li>
+        <li>Click “Download QR Code” to save the image.</li>
+      </ol>
+    </section>
+  </main>
+  <script>
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const imgPath = params.get("img");
+    if (imgPath) {
+      const qrDiv = document.getElementById("qrResult");
+      const downloadLink = document.getElementById("downloadBtn");
+      const downloadSection = document.getElementById("downloadSection");
 
-    if (!text) {
-      resultDiv.innerHTML = "<p style='color:red;'>Please enter some text.</p>";
-      downloadSection.style.display = "none";
-      return;
-    }
-
-    QRCode.toDataURL(text, { width: 256 }, function (err, url) {
-      if (err) {
-        resultDiv.innerHTML = "<p style='color:red;'>Failed to generate QR Code.</p>";
-        downloadSection.style.display = "none";
-        return;
+      if (qrDiv && downloadLink && downloadSection) {
+        qrDiv.innerHTML = `<img src="${imgPath}" alt="QR Code" style="margin-top: 10px;" />`;
+        downloadLink.href = imgPath;
+        downloadSection.style.display = "block";
       }
+    }
+//     const imgPath = new URLSearchParams(window.location.search).get("img");
+//     if (imgPath) {
+//     document.getElementById("qrResult").innerHTML = `<img src="${imgPath}" />`;
+//     document.getElementById("downloadBtn").href = imgPath;
+//     document.getElementById("downloadSection").style.display = "block";
+// }
 
-      resultDiv.innerHTML = `<img src="${url}" alt="QR Code" style="margin-top: 10px;"/>`;
-      downloadLink.href = url;
-      downloadSection.style.display = "block";
-    });
+  };
+</script>
+  <script>
+  // Get ?img=... from the URL
+  const params = new URLSearchParams(window.location.search);
+  const imgPath = params.get("img");
+
+  if (imgPath) {
+    const qrContainer = document.getElementById("qrResult");
+    qrContainer.innerHTML = `<img src="${imgPath}" alt="QR Code" style="margin-top: 10px;" />`;
+
+    const downloadLink = document.getElementById("downloadBtn");
+    downloadLink.href = imgPath;
+    document.getElementById("downloadSection").style.display = "block";
   }
 </script>
+      <!-- <script>
+        const params = new URLSearchParams(window.location.search);
+        const imgPath = params.get("img");
+        if (imgPath) {
+          document.getElementById("qrResult").innerHTML = `<img src="${imgPath}" alt="QR Code" style="margin-top: 10px;" />`;
+          document.getElementById("downloadSection").style.display = "block";
+          document.getElementById("downloadBtn").href = imgPath;
+        }
+
+      </script> -->
 
 </body>
 </html>

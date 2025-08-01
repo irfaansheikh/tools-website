@@ -19,14 +19,33 @@
   <main class="category-sections">
     <h2>WiFi QR Code Generator</h2>
     <div style="text-align:center;">
-      <input type="text" id="ssid" placeholder="WiFi SSID" style="padding:10px; width: 250px;" /><br><br>
-      <input type="text" id="password" placeholder="Password" style="padding:10px; width: 250px;" /><br><br>
-      <select id="encryption" style="padding: 10px;">
-        <option value="WPA">WPA/WPA2</option>
-        <option value="WEP">WEP</option>
-        <option value="nopass">No Password</option>
-      </select><br><br>
-      <button onclick="generateWiFiQR()" style="padding: 10px 20px; background: #4b6cb7; color: white; border: none; border-radius: 4px;">Generate QR</button>
+      <form method="POST" action="generate-wifi-qr.php">
+  <input type="text" name="ssid" placeholder="WiFi SSID" style="padding:10px; width: 250px;" required /><br><br>
+  <input type="text" name="password" placeholder="Password" style="padding:10px; width: 250px;" /><br><br>
+  <select name="encryption" style="padding: 10px;">
+    <option value="WPA">WPA/WPA2</option>
+    <option value="WEP">WEP</option>
+    <option value="nopass">No Password</option>
+  </select><br><br>
+  <button type="submit" style="padding: 10px 20px; background: #4b6cb7; color: white; border: none; border-radius: 4px;">Generate QR</button>
+</form>
+
+<div id="qrResult" style="text-align:center; margin-top: 20px;">
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const imgPath = params.get("img");
+    if (imgPath) {
+      document.getElementById("qrResult").innerHTML = `<img src="${imgPath}" alt="QR Code" style="margin-top: 10px;" />`;
+      document.getElementById("downloadSection").style.display = "block";
+      document.getElementById("downloadBtn").href = imgPath;
+    }
+  </script>
+</div>
+
+<div id="downloadSection" style="text-align:center; margin-top: 20px; display: none;">
+  <a id="downloadBtn" href="#" download="wifi-qr.png" style="padding: 10px 20px; background: #182848; color: white; border-radius: 4px; text-decoration: none;">Download QR Code</a>
+</div>
+
     </div>
 
     <div id="qrResult" style="text-align:center; margin-top: 20px;"></div>
@@ -50,5 +69,24 @@
       });
     }
   </script>
+
+  <script>
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const imgPath = params.get("img");
+    if (imgPath) {
+      const qrDiv = document.getElementById("qrResult");
+      const downloadLink = document.getElementById("downloadBtn");
+      const downloadSection = document.getElementById("downloadSection");
+
+      if (qrDiv && downloadLink && downloadSection) {
+        qrDiv.innerHTML = `<img src="${imgPath}" alt="QR Code" style="margin-top: 10px;" />`;
+        downloadLink.href = imgPath;
+        downloadSection.style.display = "block";
+      }
+    }
+  };
+</script>
+
 </body>
 </html>
