@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Template System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; }
+        header { background: #2563eb; color: white; padding: 1rem; position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: white; text-decoration: none; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 0.8; }
+        main { min-height: 80vh; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        footer { background: #1f2937; color: white; text-align: center; padding: 2rem; }
+        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .tool-card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+        .tool-title { font-size: 1.2rem; margin-bottom: 0.5rem; color: #1f2937; }
+        .tool-desc { color: #6b7280; margin-bottom: 1rem; }
+        .btn { background: #2563eb; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    
+    <main>
+        <h1>Ultimate Tools Website</h1>
+        <p>Your one-stop destination for online tools, converters, and utilities.</p>
+        
+        <div id="tools-container" class="tool-grid">
+            <!-- Tools will be loaded here dynamically -->
+        </div>
+    </main>
+    
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Dynamic Header/Footer Loading System
+        class TemplateManager {
+            constructor() {
+                this.loadComponents();
+                this.loadTools();
+            }
+
+            async loadComponents() {
+                // Load header
+                const headerHTML = `
+                    <header>
+                        <nav>
+                            <div class="logo">🛠️ Ultimate Tools</div>
+                            <ul class="nav-links">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/tools/">Tools</a></li>
+                                <li><a href="/blog/">Blog</a></li>
+                                <li><a href="/games/">Games</a></li>
+                                <li><a href="/about/">About</a></li>
+                            </ul>
+                        </nav>
+                    </header>
+                `;
+
+                // Load footer
+                const footerHTML = `
+                    <footer>
+                        <p>&copy; 2025 Ultimate Tools. All rights reserved. | <a href="/privacy/" style="color: #60a5fa;">Privacy</a> | <a href="/terms/" style="color: #60a5fa;">Terms</a></p>
+                    </footer>
+                `;
+
+                document.getElementById('header-placeholder').innerHTML = headerHTML;
+                document.getElementById('footer-placeholder').innerHTML = footerHTML;
+            }
+
+            loadTools() {
+                const tools = [
+                    { name: 'PDF Merger', desc: 'Combine multiple PDF files into one', url: '/tools/pdf-merger/' },
+                    { name: 'QR Generator', desc: 'Create QR codes instantly', url: '/tools/qr-generator/' },
+                    { name: 'Image Compressor', desc: 'Reduce image file sizes', url: '/tools/image-compressor/' },
+                    { name: 'Unit Converter', desc: 'Convert between different units', url: '/tools/unit-converter/' },
+                    { name: 'Color Picker', desc: 'Find perfect colors for your design', url: '/tools/color-picker/' },
+                    { name: 'Text Counter', desc: 'Count words, characters, and lines', url: '/tools/text-counter/' }
+                ];
+
+                const container = document.getElementById('tools-container');
+                container.innerHTML = tools.map(tool => `
+                    <div class="tool-card">
+                        <h3 class="tool-title">${tool.name}</h3>
+                        <p class="tool-desc">${tool.desc}</p>
+                        <a href="${tool.url}" class="btn">Use Tool</a>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new TemplateManager();
+        });
+
+        // SEO and Analytics placeholder
+        function trackToolUsage(toolName) {
+            // Google Analytics tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'tool_usage', {
+                    'tool_name': toolName,
+                    'value': 1
+                });
+            }
+        }
+    </script>
+</body>
+</html>
