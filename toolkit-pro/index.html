@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolKit Pro - All-in-One Online Tools Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles */
+        .tool-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-item:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover:after {
+            width: 100%;
+        }
+        /* Dynamic content loader */
+        .dynamic-content {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .dynamic-content.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header (will be loaded dynamically) -->
+    <header id="main-header" class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo placeholder - will be replaced dynamically -->
+            <div id="header-logo" class="flex items-center">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d162fa45-54c7-4c80-ab2a-5c30cd090470.png" alt="ToolKit Pro logo with modern typography and toolbox icon" id="site-logo" class="h-10">
+                <h1 class="ml-2 text-xl font-bold text-gray-800 hidden md:block">ToolKit Pro</h1>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav id="main-nav" class="hidden md:flex space-x-8">
+                <ul class="flex space-x-6">
+                    <li class="nav-item"><a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a></li>
+                    <li class="nav-item"><a href="tools.html" class="text-gray-600 hover:text-blue-600">Tools</a></li>
+                    <li class="nav-item"><a href="blog.html" class="text-gray-600 hover:text-blue-600">Blog</a></li>
+                    <li class="nav-item"><a href="games.html" class="text-gray-600 hover:text-blue-600">Games</a></li>
+                </ul>
+            </nav>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- User actions -->
+            <div id="user-actions" class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-600">Login</a>
+                <a href="signup.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Sign Up</a>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-md">
+            <ul class="space-y-2">
+                <li><a href="index.html" class="block px-2 py-1 text-gray-600 hover:text-blue-600">Home</a></li>
+                <li><a href="tools.html" class="block px-2 py-1 text-gray-600 hover:text-blue-600">Tools</a></li>
+                <li><a href="blog.html" class="block px-2 py-1 text-gray-600 hover:text-blue-600">Blog</a></li>
+                <li><a href="games.html" class="block px-2 py-1 text-gray-600 hover:text-blue-600">Games</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Your All-in-One Online Toolkit</h1>
+            <p class="text-xl md:text-2xl mb-8">Free, fast and powerful tools for everyday tasks</p>
+            <div class="max-w-3xl mx-auto relative">
+                <input type="text" placeholder="Search for tools (e.g., PDF converter, QR generator)" 
+                       class="w-full px-6 py-4 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <button class="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition-colors">
+                    Search
+                </button>
+            </div>
+            <div class="mt-8 flex justify-center space-x-4">
+                <button class="bg-white text-blue-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                    Most Popular Tools
+                </button>
+                <button class="bg-transparent border border-white text-white px-6 py-2 rounded-full font-medium hover:bg-white hover:text-blue-600 transition-colors">
+                    New Tools
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Tools Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Featured Tools</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="featured-tools-container">
+                <!-- Tool cards will be populated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Tool Categories Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Tool Categories</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <!-- Category cards -->
+                <a href="pdf-tool.html" class="category-card p-6 bg-white rounded-lg shadow-sm text-center hover:bg-blue-50 transition-colors">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cca167f9-a910-46a4-b5b3-ef2b50910499.png" alt="PDF document icon in blue color" class="w-10 h-10">
+                    </div>
+                    <h3 class="font-medium text-gray-800">PDF Tools</h3>
+                </a>
+                
+                <a href="qr-tool.html" class="category-card p-6 bg-white rounded-lg shadow-sm text-center hover:bg-blue-50 transition-colors">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0289746b-6d53-4011-9606-5879a9c2c0fd.png" alt="QR code icon in indigo color" class="w-10 h-10">
+                    </div>
+                    <h3 class="font-medium text-gray-800">QR Tools</h3>
+                </a>
+                
+                <a href="ai-tools.html" class="category-card p-6 bg-white rounded-lg shadow-sm text-center hover:bg-blue-50 transition-colors">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bc33983-63f6-4209-a354-6d94f38efd16.png" alt="AI brain icon in green color" class="w-10 h-10">
+                    </div>
+                    <h3 class="font-medium text-gray-800">AI Tools</h3>
+                </a>
+                
+                <a href="converters.html" class="category-card p-6 bg-white rounded-lg shadow-sm text-center hover:bg-blue-50 transition-colors">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fdcd121f-0753-45a4-ae31-cb94b8481383.png" alt="Ruler and calculator icon in yellow color" class="w-10 h-10">
+                    </div>
+                    <h3 class="font-medium text-gray-800">Converters</h3>
+                </a>
+                
+                <a href="#" class="category-card p-6 bg-white rounded-lg shadow-sm text-center hover:bg-blue-50 transition-colors">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b25fd3ee-55e4-47e9-a05c-2772e6bfa2c3.png" alt="Camera and photos icon in red color" class="w-10 h-10">
+                    </div>
+                    <h3 class="font-medium text-gray-800">Image Tools</h3>
+                </a>
+                
+                <a href="#" class="category-card p-6 bg-white rounded-lg shadow-sm text-center hover:bg-blue-50 transition-colors">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c81750d6-c0b3-4f14-9f02-ddbaa2964df8.png" alt="Search chart icon in purple color" class="w-10 h-10">
+                    </div>
+                    <h3 class="font-medium text-gray-800">SEO Tools</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center px-4">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span class="text-2xl font-bold text-blue-600">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Select Your Tool</h3>
+                    <p class="text-gray-600">Browse our extensive collection of free online tools across multiple categories.</p>
+                </div>
+                <div class="text-center px-4">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <span class="text-2xl font-bold text-indigo-600">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Use It Instantly</h3>
+                    <p class="text-gray-600">No registration required. Just open the tool and start using it right away.</p>
+                </div>
+                <div class="text-center px-4">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
+                        <span class="text-2xl font-bold text-green-600">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Get Results Fast</h3>
+                    <p class="text-gray-600">Process your files, data or requests in seconds with our high-performance tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ad Space (Monetization) -->
+    <section class="py-8 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <h3 class="text-lg font-medium text-gray-600 mb-2">Advertisement</h3>
+                <p class="text-gray-500 mb-4">This space can be used for Google AdSense or direct sponsorships</p>
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c27c9549-05bc-4e36-9376-68d668ceea26.png" alt="Advertisement placeholder showing potential ad space dimensions" class="mx-auto">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-blue-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/29e52209-e141-44ed-9f23-aadfccd55690.png" alt="Smiling female professional in business attire" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h3 class="font-medium">Sarah Johnson</h3>
+                            <p class="text-gray-500 text-sm">Marketing Professional</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"The PDF tools saved me hours of work every week. The compression tool is the best I've found online!"</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5ffb3c09-b48f-4132-a3b8-3ba4b3f479dd.png" alt="Young male developer with glasses" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h3 class="font-medium">Michael Chen</h3>
+                            <p class="text-gray-500 text-sm">Web Developer</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"I use the QR generator daily for my projects. Fast, simple, and reliable."</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e5be578f-ec19-41c0-92cf-f62813de2204.png" alt="Middle-aged male teacher with beard" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h3 class="font-medium">David Miller</h3>
+                            <p class="text-gray-500 text-sm">University Professor</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"The unit converters help me prepare scientific materials for my students accurately and effortlessly."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Features CTA -->
+    <section class="py-16 bg-indigo-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Unlock Premium Features</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Get faster processing, larger file sizes, and no ads with our affordable premium plans.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-white text-indigo-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors">
+                    View Plans
+                </button>
+                <button class="bg-transparent border border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-600 transition-colors">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Preview Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Latest Blog Posts</h2>
+                <a href="blog.html" class="text-blue-600 font-medium hover:underline">View All</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/16d89d7c-2980-41fc-8344-1c0ef4317dee.png" alt="Person working on laptop with multiple tools open on screen" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-sm text-blue-600 font-medium">Productivity</span>
+                        <h3 class="text-xl font-bold mt-2 mb-3">10 Online Tools That Will Save You Hours Each Week</h3>
+                        <p class="text-gray-600 mb-4">Discover our top picks for tools that automate tedious tasks and boost your efficiency.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8e1cb5b5-dbc9-4f5a-acd7-725a956e878b.png" alt="Female writer with red hair" class="w-6 h-6 rounded-full mr-2">
+                            <span>By Jessica Williams</span>
+                            <span class="mx-2">•</span>
+                            <span>May 15, 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/80101d45-dbc3-4850-8aa5-dd84ff557121.png" alt="QR codes on various products in retail environment" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-sm text-green-600 font-medium">Technology</span>
+                        <h3 class="text-xl font-bold mt-2 mb-3">Creative Uses for QR Codes in Your Business</h3>
+                        <p class="text-gray-600 mb-4">Learn innovative ways to implement QR codes that engage customers and drive sales.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cfc5f141-11b5-46e8-904f-6a5d247f02b4.png" alt="Male tech consultant with beard" class="w-6 h-6 rounded-full mr-2">
+                            <span>By Robert Garcia</span>
+                            <span class="mx-2">•</span>
+                            <span>May 10, 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8d8f9b4-067c-4570-a28d-db8a93b00c7c.png" alt="SEO dashboard with various metrics and charts" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-sm text-purple-600 font-medium">SEO</span>
+                        <h3 class="text-xl font-bold mt-2 mb-3">Free SEO Tools Every Website Owner Should Use</h3>
+                        <p class="text-gray-600 mb-4">Essential SEO tools that help you analyze and improve your website's search ranking.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/44cdc732-b16c-47a5-96e8-c2965f7ac78a.png" alt="SEO expert with glasses analyzing data" class="w-6 h-6 rounded-full mr-2">
+                            <span>By Amanda Lee</span>
+                            <span class="mx-2">•</span>
+                            <span>May 5, 2023</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (will be loaded dynamically) -->
+    <footer id="main-footer" class="bg-gray-800 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">ToolKit Pro</h3>
+                    <p class="text-gray-400">Your all-in-one solution for free online tools that make digital tasks simpler and faster.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">All Tools</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Categories</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">PDF Tools</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Converters</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">QR Generator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">AI Tools</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Get In Touch</h3>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dc5062fa-b608-4fd1-8ba6-63085ba190e1.png" alt="Facebook icon" class="w-6 h-6">
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/496ad1b3-9cdf-4c5b-9894-6e33feaf8ffb.png" alt="Twitter icon" class="w-6 h-6">
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/08a68718-8e20-49d0-a4e5-4e219208fff1.png" alt="Instagram icon" class="w-6 h-6">
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6aef2c83-727c-457d-8f71-94bf9d8fbe50.png" alt="LinkedIn icon" class="w-6 h-6">
+                        </a>
+                    </div>
+                    <p class="text-gray-400">Email: support@toolkitpro.com</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 ToolKit Pro. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tool libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    
+    <!-- Scripts -->
+    <script>
+        // This will handle dynamic content loading
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to load external HTML templates
+            function loadTemplate(elementId, templateFile) {
+                fetch(templateFile)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById(elementId).innerHTML = html;
+                        document.getElementById(elementId).classList.add('loaded');
+                    })
+                    .catch(error => {
+                        console.error('Error loading template:', error);
+                        document.getElementById(elementId).innerHTML = '<p>Error loading content. Please try again later.</p>';
+                    });
+            }
+
+            // Load dynamic components
+            const navHtml = `
+                <ul class="flex space-x-6">
+                    <li class="nav-item"><a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a></li>
+                    <li class="nav-item"><a href="tools.html" class="text-gray-600 hover:text-blue-600">Tools</a></li>
+                    <li class="nav-item"><a href="blog.html" class="text-gray-600 hover:text-blue-600">Blog</a></li>
+                    <li class="nav-item"><a href="games.html" class="text-gray-600 hover:text-blue-600">Games</a></li>
+                </ul>
+            `;
+            document.getElementById('main-nav').innerHTML = navHtml;
+            document.getElementById('mobile-menu').innerHTML = navHtml;
+            document.getElementById('user-actions').innerHTML = `
+                <a href="login.html" class="text-gray-600 hover:text-blue-600">Login</a>
+                <a href="signup.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Sign Up</a>
+            `;
+
+            // Toggle mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Load featured tools directly
+            const tools = [
+                {
+                    name: "PDF Compressor",
+                    description: "Reduce PDF file size while maintaining quality",
+                    icon: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ec153e99-7f79-4df2-8f01-136b9c775213.png",
+                    bgColor: "bg-blue-100",
+                    link: "javascript:compressPDF()"
+                },
+                {
+                    name: "QR Generator",
+                    description: "Create custom QR codes for URLs, text and more", 
+                    icon: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4fb59289-f198-4b91-afb8-b65497ff75e5.png",
+                    bgColor: "bg-indigo-100",
+                    link: "javascript:generateQRCode()"
+                },
+                {
+                    name: "Unit Converter",
+                    description: "Convert between different units of measurement",
+                    icon: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8067fe7e-adb8-4aa9-91dd-cf9a8947d399.png",
+                    bgColor: "bg-yellow-100",
+                    link: "javascript:showUnitConverter()"
+                }
+            ];
+
+            const container = document.getElementById('featured-tools-container');
+            let html = '';
+            
+            tools.forEach(tool => {
+                html += `
+                    <div class="tool-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-lg ${tool.bgColor} flex items-center justify-center mr-4">
+                                <img src="${tool.icon}" alt="${tool.name} icon" class="w-8 h-8">
+                            </div>
+                            <h3 class="text-lg font-semibold">${tool.name}</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">${tool.description}</p>
+                        <a href="${tool.link}" class="text-blue-600 font-medium hover:underline">Use Tool</a>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            container.classList.add('loaded');
+        });
+
+        // PDF Tools Implementation
+        async function compressPDF() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.pdf';
+            
+            fileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                const arrayBuffer = await file.arrayBuffer();
+                
+                // Load and compress PDF
+                const { PDFDocument } = PDFLib;
+                const pdfDoc = await PDFDocument.load(arrayBuffer);
+                const compressedBytes = await pdfDoc.save({ useObjectStreams: true });
+                
+                // Create download link
+                const blob = new Blob([compressedBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'compressed.pdf';
+                a.click();
+            };
+            
+            fileInput.click();
+        }
+
+        // QR Code Generator Implementation
+        function generateQRCode() {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:1000;">
+                    <div style="background:white;padding:20px;border-radius:8px;width:300px;">
+                        <h3>QR Code Generator</h3>
+                        <input type="text" id="qrText" placeholder="Enter text or URL" style="width:100%;padding:8px;margin:10px 0;">
+                        <div id="qrcode" style="margin:10px auto;"></div>
+                        <button onclick="createQRCode()" style="background:#3b82f6;color:white;border:none;padding:8px 16px;border-radius:4px;">Generate</button>
+                        <button onclick="document.body.removeChild(this.parentNode.parentNode.parentNode)" style="background:#ccc;margin-left:10px;">Cancel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function createQRCode() {
+            const text = document.getElementById('qrText').value;
+            const qrcodeDiv = document.getElementById('qrcode');
+            qrcodeDiv.innerHTML = '';
+            
+            const qr = qrcode(0, 'L');
+            qr.addData(text);
+            qr.make();
+            qrcodeDiv.innerHTML = qr.createImgTag(4);
+        }
+
+        function showUnitConverter() {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:1000;">
+                    <div style="background:white;padding:20px;border-radius:8px;width:300px;">
+                        <h3>Unit Converter</h3>
+                        <input type="number" id="unitValue" placeholder="Enter value" style="width:100%;padding:8px;margin:10px 0;">
+                        <select id="unitType" style="width:100%;padding:8px;margin:10px 0;">
+                            <option value="length">Length</option>
+                            <option value="weight">Weight</option>
+                            <option value="temperature">Temperature</option>
+                        </select>
+                        <select id="unitFrom" style="width:100%;padding:8px;margin:10px 0;"></select>
+                        <select id="unitTo" style="width:100%;padding:8px;margin:10px 0;"></select>
+                        <div id="unitResult" style="margin:10px 0;padding:10px;background:#f5f5f5;"></div>
+                        <button onclick="calculateConversion()" style="background:#3b82f6;color:white;border:none;padding:8px 16px;border-radius:4px;">Convert</button>
+                        <button onclick="document.body.removeChild(this.parentNode.parentNode.parentNode)" style="background:#ccc;margin-left:10px;">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            updateUnitOptions();
+        }
+
+        function updateUnitOptions() {
+            const type = document.getElementById('unitType').value;
+            const fromSelect = document.getElementById('unitFrom');
+            const toSelect = document.getElementById('unitTo');
+            
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+            
+            const units = {
+                length: ['meter', 'kilometer', 'centimeter', 'millimeter', 'inch', 'foot', 'yard', 'mile'],
+                weight: ['gram', 'kilogram', 'milligram', 'pound', 'ounce', 'ton'],
+                temperature: ['celsius', 'fahrenheit', 'kelvin']
+            };
+            
+            units[type].forEach(unit => {
+                fromSelect.add(new Option(unit, unit));
+                toSelect.add(new Option(unit, unit));
+            });
+        }
+
+        function calculateConversion() {
+            const value = parseFloat(document.getElementById('unitValue').value);
+            const type = document.getElementById('unitType').value;
+            const from = document.getElementById('unitFrom').value;
+            const to = document.getElementById('unitTo').value;
+            
+            if (!value) {
+                document.getElementById('unitResult').innerHTML = 'Please enter a valid number';
+                return;
+            }
+            
+            let result;
+            const conversions = {
+                length: {
+                    'meter': 1,
+                    'kilometer': 0.001,
+                    'centimeter': 100,
+                    'millimeter': 1000,
+                    'inch': 39.3701,
+                    'foot': 3.28084,
+                    'yard': 1.09361,
+                    'mile': 0.000621371
+                },
+                weight: {
+                    'gram': 1,
+                    'kilogram': 0.001,
+                    'milligram': 1000,
+                    'pound': 0.00220462,
+                    'ounce': 0.035274,
+                    'ton': 0.000001
+                },
+                temperature: {
+                    'celsius': 1,
+                    'fahrenheit': 33.8,
+                    'kelvin': 274.15
+                }
+            };
+
+            if (type === 'temperature') {
+                if (from === 'celsius') {
+                    if (to === 'fahrenheit') {
+                        result = (value * 9/5) + 32;
+                    } else if (to === 'kelvin') {
+                        result = value + 273.15;
+                    } else {
+                        result = value;
+                    }
+                } else if (from === 'fahrenheit') {
+                    if (to === 'celsius') {
+                        result = (value - 32) * 5/9;
+                    } else if (to === 'kelvin') {
+                        result = (value - 32) * 5/9 + 273.15;
+                    } else {
+                        result = value;
+                    }
+                } else if (from === 'kelvin') {
+                    if (to === 'celsius') {
+                        result = value - 273.15;
+                    } else if (to === 'fahrenheit') {
+                        result = (value - 273.15) * 9/5 + 32;
+                    } else {
+                        result = value;
+                    }
+                }
+            } else {
+                result = value * (conversions[type][to] / conversions[type][from]);
+            }
+
+            document.getElementById('unitResult').innerHTML = `${value} ${from} = ${result.toFixed(2)} ${to}`;
+        }
+    </script>
+</body>
+</html>

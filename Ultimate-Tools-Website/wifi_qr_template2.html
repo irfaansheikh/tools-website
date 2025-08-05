@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WiFi QR Code Generator | Ultimate Tools</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .qr-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    .input-group input:focus, .input-group select:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-secondary {
+      background: #f7fafc;
+      color: #4a5568;
+      border: 2px solid #e2e8f0;
+    }
+    
+    .btn-secondary:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+    
+    .qr-result {
+      text-align: center;
+      margin: 2rem 0;
+      padding: 2rem;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px dashed #cbd5e0;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    .qr-result img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .download-section {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .btn-download {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white;
+      padding: 12px 32px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+      color: white;
+      text-decoration: none;
+    }
+    
+    .tool-guide {
+      background: #ebf8ff;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-top: 3rem;
+      border-left: 4px solid #4299e1;
+    }
+    
+    .tool-guide h3 {
+      color: #2b6cb0;
+      margin-bottom: 1rem;
+    }
+    
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    
+    .feature-item {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      color: #4299e1;
+      margin-bottom: 0.5rem;
+    }
+    
+    .error {
+      color: #e53e3e;
+      background: #fed7d7;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    
+    .success {
+      color: #38a169;
+      background: #c6f6d5;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .btn-group {
+        flex-direction: column;
+      }
+      .qr-container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">
+      <a href="/" style="text-decoration: none; color: white;">
+        <h1>🛠️ Ultimate Tools</h1>
+      </a>
+    </div>
+    <nav class="main-nav">
+      <a href="/index.html" class="nav-btn">🏠 Home</a>
+      <a href="/tools.html" class="nav-btn">🔧 All Tools</a>
+      <a href="/blog.html" class="nav-btn">📝 Blog</a>
+      <a href="/games.html" class="nav-btn">🎮 Games</a>
+    </nav>
+  </header>
+
+  <main class="category-sections">
+    <div class="qr-container">
+      <h2>📶 WiFi QR Code Generator</h2>
+      <p>Create QR codes for easy WiFi sharing. Guests can scan and connect instantly without typing passwords!</p>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">📱</div>
+          <strong>Easy Sharing</strong>
+          <p>Share WiFi without revealing passwords</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔒</div>
+          <strong>Secure</strong>
+          <p>Works with WPA, WEP, and open networks</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <strong>Instant Connect</strong>
+          <p>One scan to connect automatically</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🖨️</div>
+          <strong>Print Ready</strong>
+          <p>Perfect for cafes, offices, homes</p>
+        </div>
+      </div>
+
+      <form id="wifiForm">
+        <div class="input-group">
+          <label for="ssid">📡 WiFi Network Name (SSID):</label>
+          <input 
+            type="text" 
+            id="ssid" 
+            name="ssid" 
+            placeholder="e.g., MyHomeWiFi, CafeGuest"
+            required>
+        </div>
+
+        <div class="input-group">
+          <label for="password">🔑 WiFi Password:</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Enter WiFi password (leave empty for open networks)">
+          <small style="color: #718096; margin-top: 0.5rem; display: block;">
+            💡 Leave blank for open/public WiFi networks
+          </small>
+        </div>
+
+        <div class="input-group">
+          <label for="encryption">🛡️ Security Type:</label>
+          <select id="encryption" name="encryption">
+            <option value="WPA">WPA/WPA2 (Most common)</option>
+            <option value="WEP">WEP (Older security)</option>
+            <option value="nopass">Open Network (No password)</option>
+          </select>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">
+            <span id="generateText">📶 Generate WiFi QR</span>
+            <span id="loadingText" style="display: none;">⏳ Creating...</span>
+          </button>
+          <button type="button" id="resetBtn" class="btn btn-secondary">
+            ↩️ Reset Form
+          </button>
+        </div>
+      </form>
+
+      <div id="qrResult" class="qr-result">
+        <div style="color: #718096; font-size: 18px;">
+          📶 Your WiFi QR code will appear here
+        </div>
+      </div>
+
+      <div id="downloadSection" class="download-section" style="display: none;">
+        <a id="downloadBtn" href="#" download="wifi-qr.png" class="btn-download">
+          ⬇️ Download WiFi QR Code
+        </a>
+        <p style="margin-top: 1rem; color: #718096; font-size: 14px;">
+          Print this QR code and display it for easy guest access
+        </p>
+      </div>
+
+      <div id="messageArea"></div>
+
+      <section class="tool-guide">
+        <h3>📱 How to Use WiFi QR Codes</h3>
+        <div class="grid-2">
+          <div>
+            <h4>📝 Creating Your QR Code:</h4>
+            <ol>
+              <li>Enter your WiFi network name (SSID)</li>
+              <li>Type the WiFi password</li>
+              <li>Select the correct security type</li>
+              <li>Click "Generate WiFi QR"</li>
+              <li>Download and share the QR code</li>
+            </ol>
+          </div>
+          
+          <div>
+            <h4>📱 For Your Guests:</h4>
+            <ol>
+              <li>Open camera app on phone</li>
+              <li>Point camera at the QR code</li>
+              <li>Tap the WiFi notification</li>
+              <li>Phone connects automatically</li>
+              <li>No manual password typing needed!</li>
+            </ol>
+          </div>
+        </div>
+        
+        <h4>💡 Pro Tips:</h4>
+        <ul>
+          <li><strong>Print & Frame:</strong> Put QR code in a picture frame for easy guest access</li>
+          <li><strong>Business Use:</strong> Perfect for restaurants, cafes, and waiting rooms</li>
+          <li><strong>Home Use:</strong> Share with neighbors, babysitters, and visitors</li>
+          <li><strong>Security:</strong> Change WiFi password periodically and regenerate QR code</li>
+          <li><strong>Testing:</strong> Always test the QR code with different devices first</li>
+        </ul>
+
+        <h4>📱 Compatible Devices:</h4>
+        <p>Works with iPhone (iOS 11+), Android phones, and most modern smartphones with camera apps.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- QR Code Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  
+  <script>
+    class WiFiQRGenerator {
+      constructor() {
+        this.form = document.getElementById('wifiForm');
+        this.ssidInput = document.getElementById('ssid');
+        this.passwordInput = document.getElementById('password');
+        this.encryptionSelect = document.getElementById('encryption');
+        this.result = document.getElementById('qrResult');
+        this.downloadSection = document.getElementById('downloadSection');
+        this.downloadBtn = document.getElementById('downloadBtn');
+        this.resetBtn = document.getElementById('resetBtn');
+        this.generateText = document.getElementById('generateText');
+        this.loadingText = document.getElementById('loadingText');
+        this.messageArea = document.getElementById('messageArea');
+        
+        this.initEvents();
+        this.trackPageView();
+      }
+
+      initEvents() {
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        this.resetBtn.addEventListener('click', () => this.reset());
+        this.encryptionSelect.addEventListener('change', () => this.handleEncryptionChange());
+        
+        // Clear messages on input
+        [this.ssidInput, this.passwordInput].forEach(input => {
+          input.addEventListener('input', () => this.clearMessages());
+        });
+      }
+
+      handleEncryptionChange() {
+        const isOpen = this.encryptionSelect.value === 'nopass';
+        this.passwordInput.disabled = isOpen;
+        this.passwordInput.required = !isOpen;
+        this.passwordInput.placeholder = isOpen 
+          ? 'No password needed for open networks' 
+          : 'Enter WiFi password';
+        
+        if (isOpen) {
+          this.passwordInput.value = '';
+        }
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+        
+        const ssid = this.ssidInput.value.trim();
+        const password = this.passwordInput.value;
+        const encryption = this.encryptionSelect.value;
+
+        if (!ssid) {
+          this.showError('Please enter the WiFi network name (SSID)');
+          return;
+        }
+
+        if (encryption !== 'nopass' && !password) {
+          this.showError('Please enter the WiFi password');
+          return;
+        }
+
+        this.showLoading(true);
+        
+        try {
+          await this.generateWiFiQR(ssid, password, encryption);
+          this.trackUsage('wifi_qr_generated', `${encryption}:${ssid.length}chars`);
+          this.showSuccess('WiFi QR Code generated successfully!');
+        } catch (error) {
+          this.showError('Failed to generate WiFi QR code. Please try again.');
+          console.error('WiFi QR Generation Error:', error);
+        } finally {
+          this.showLoading(false);
+        }
+      }
+
+      async generateWiFiQR(ssid, password, encryption) {
+        // Create WiFi QR format: WIFI:T:WPA;S:MyNetwork;P:MyPassword;;
+        const wifiString = `WIFI:T:${encryption};S:${ssid};P:${password};;`;
+        
+        return new Promise((resolve, reject) => {
+          const options = {
+            width: 300,
+            margin: 2,
+            color: {
+              dark: '#000000',
+              light: '#FFFFFF'
+            },
+            errorCorrectionLevel: 'M'
+          };
+
+          QRCode.toDataURL(wifiString, options, (err, url) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+
+            // Display QR code
+            this.result.innerHTML = `
+              <img src="${url}" alt="WiFi QR Code" style="max-width: 100%; height: auto;" />
+              <div style="margin-top: 1rem;">
+                <p style="color: #4a5568; font-size: 14px; margin-bottom: 0.5rem;">
+                  📱 <strong>Network:</strong> ${ssid}
+                </p>
+                <p style="color: #4a5568; font-size: 14px;">
+                  🔒 <strong>Security:</strong> ${encryption === 'nopass' ? 'Open Network' : encryption}
+                </p>
+              </div>
+            `;
+
+            // Setup download
+            this.setupDownload(url, ssid);
+            this.downloadSection.style.display = 'block';
+            
+            resolve(url);
+          });
+        });
+      }
+
+      setupDownload(dataUrl, ssid) {
+        // Create filename with sanitized SSID and timestamp
+        const sanitizedSSID = ssid.substring(0, 20)
+          .replace(/[^a-zA-Z0-9]/g, '_')
+          .replace(/_+/g, '_')
+          .replace(/^_|_$/g, '');
+        
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+        const filename = `wifi_${sanitizedSSID}_${timestamp}.png`;
+        
+        this.downloadBtn.href = dataUrl;
+        this.downloadBtn.download = filename;
+      }
+
+      reset() {
+        this.form.reset();
+        this.passwordInput.disabled = false;
+        this.passwordInput.required = false;
+        this.result.innerHTML = `
+          <div style="color: #718096; font-size: 18px;">
+            📶 Your WiFi QR code will appear here
+          </div>
+        `;
+        this.downloadSection.style.display = 'none';
+        this.clearMessages();
+        this.ssidInput.focus();
+        this.trackUsage('wifi_qr_form_reset');
+      }
+
+      showLoading(loading) {
+        if (loading) {
+          this.generateText.style.display = 'none';
+          this.loadingText.style.display = 'inline';
+          this.form.querySelector('button[type="submit"]').disabled = true;
+        } else {
+          this.generateText.style.display = 'inline';
+          this.loadingText.style.display = 'none';
+          this.form.querySelector('button[type="submit"]').disabled = false;
+        }
+      }
+
+      showError(message) {
+        this.messageArea.innerHTML = `<div class="error">❌ ${message}</div>`;
+        setTimeout(() => this.clearMessages(), 5000);
+      }
+
+      showSuccess(message) {
+        this.messageArea.innerHTML = `<div class="success">✅ ${message}</div>`;
+        setTimeout(() => this.clearMessages(), 3000);
+      }
+
+      clearMessages() {
+        this.messageArea.innerHTML = '';
+      }
+
+      // Analytics tracking
+      trackPageView() {
+        this.logUsage('page_view', 'wifi_qr_generator', window.location.pathname);
+      }
+
+      trackUsage(action, details = '') {
+        this.logUsage(action, 'wifi_qr_generator', details);
+      }
+
+      logUsage(action, tool, details) {
+        const data = {
+          timestamp: new Date().toISOString(),
+          action: action,
+          tool: tool,
+          details: details,
+          user_agent: navigator.userAgent,
+          referrer: document.referrer,
+          url: window.location.href
+        };
+
+        fetch('/api/log-usage.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        }).catch(err => console.log('Logging failed:', err));
+
+        if (typeof gtag !== 'undefined') {
+          gtag('event', action, {
+            'tool_name': tool,
+            'details': details
+          });
+        }
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new WiFiQRGenerator();
+    });
+  </script>
+</body>
+</html>

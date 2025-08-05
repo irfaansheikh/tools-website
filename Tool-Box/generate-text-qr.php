@@ -3,7 +3,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qrtext'])) {
     $text = trim($_POST['qrtext']);
 
     if ($text !== '') {
-        require_once __DIR__ . '/qrlib/qrlib.php'; // Ensure this path is correct
+        require_once __DIR__ . '/lib/qrlib/qrlib.php'; // Confirmed working
 
         // Directory setup
         $dir = __DIR__ . '/qrcodes/text/';
@@ -13,13 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qrtext'])) {
 
         // Generate filename: input_date_serial.png
         $sanitizedText = preg_replace('/[^a-zA-Z0-9]/', '_', $text); // Sanitize input
-        $date = date('Y-m-d'); // Dynamic date, currently 2025-08-01
+        $date = date('Y-m-d'); // Dynamic date, currently 2025-08-04
         $files = glob($dir . $sanitizedText . '_' . $date . '_*.png');
         $serial = str_pad(count($files) + 1, 3, '0', STR_PAD_LEFT); // e.g., 001
         $filename = $dir . $sanitizedText . '_' . $date . '_' . $serial . '.png';
 
-        // Web path relative to the script (adjust if needed)
-        $webPath = 'qrcodes/text/' . $sanitizedText . '_' . $date . '_' . $serial . '.png'; // Relative path
+        // Web path relative to the server root (use port dynamically if needed)
+        $port = 8001; // Adjust based on which instance (8000, 8001, 8002)
+        $webPath = 'http://localhost:' . $port . '/qrcodes/text/' . $sanitizedText . '_' . $date . '_' . $serial . '.png';
 
         // Generate QR code
         QRcode::png($text, $filename, QR_ECLEVEL_L, 4);
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qrtext'])) {
             file_put_contents($logFile, implode(",", array_map("addslashes", $logData)) . "\n", FILE_APPEND);
 
             // Redirect with image path
-            header("Location: text-to-qr.html?img=" . urlencode($webPath));
+            header("Location: text-to-qr.php?img=" . urlencode($webPath));
             exit;
         } else {
             echo "Error: QR code file not created at " . $filename;
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qrtext'])) {
         echo "Please enter some text.";
     }
 } else {
-    header("Location: text-to-qr.html");
+    header("Location: text-to-qr.php");
     exit;
 }
 ?>
