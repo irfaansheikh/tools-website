@@ -2,19 +2,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Email/Phone QR Generator | Ultimate Tools</title>
-  <link rel="stylesheet" href="../../style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tools - Ultimate Tools</title>
+<link rel="stylesheet" href="./css/style.css" />
+<link rel="stylesheet" href="./css/footer.css" />
+
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  rel="stylesheet"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<!-- <link rel="stylesheet" href="../../style-category.css" />
+<script src="../../tool-loader.js" defer></script> -->
+
+
 </head>
-<body class="qr-generator">
-  <header class="site-header">
-    <div class="logo"><a href="/" style="text-decoration: none; color: white;"><h1>Ultimate Tools</h1></a></div>
-    <nav class="main-nav">
-      <a href="/index.html" class="nav-btn">Home</a>
-      <a href="/tools.html" class="nav-btn">All Tools</a>
-    </nav>
-  </header>
+<body>
+
+<header class="site-header">
+<div class="logo">
+  <a href="index.html">
+    <img src="images/ultimate-tools-favicon.png" alt="Ultimate Tools Logo" />
+  </a>
+</div>
+
+
+  <nav class="main-nav">
+  <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+  <a href="tools.html" class="nav-btn"><i class="fas fa-toolbox"></i> Tools</a>
+  <a href="blog.html" class="nav-btn"><i class="fas fa-blog"></i> Blog</a>
+  <a href="about.html" class="nav-btn"><i class="fas fa-info-circle"></i> About</a>
+  <a href="contact.html" class="nav-btn"><i class="fas fa-envelope"></i> Contact</a>
+  <a href="faq.html" class="nav-btn"><i class="fas fa-question-circle"></i> FAQ</a>
+  <a href="tool-request.html" class="nav-btn"><i class="fas fa-plus-square"></i> Request Tool</a>
+  <a href="changelog.html" class="nav-btn"><i class="fas fa-history"></i> Changelog</a>
+  <a href="sitemap.html" class="nav-btn"><i class="fas fa-sitemap"></i> Sitemap</a>
+  <a href="login.html" class="nav-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+  <a href="signup.html" class="nav-btn"><i class="fas fa-user-plus"></i> Signup</a>
+
+  </nav>
+</header>
+
 
   <main class="category-sections">
     <h2>Email/Phone QR Code Generator</h2>
@@ -55,5 +83,18 @@
       });
     }
   </script>
+  <script src="./js/main.js"></script>
+<script src="./js/pdf-compressor.js"></script>
+<script src="./js/image-resizer.js"></script>
+<script src="./js/unit-converter.js"></script>
+
+<div id="footer-placeholder"></div>
+<script>
+  fetch("./partials/footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    });
+</script>
 </body>
 </html>
