@@ -22,7 +22,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const blogContainer = document.getElementById("blog-posts");
   let currentPage = 1;
-  const maxPages = 1000;
+  const maxPages = 5000;
   const postsPerLoad = 12;
 
   function loadPosts() {
