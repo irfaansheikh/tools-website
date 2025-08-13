@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise ERP System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #3498db;
+      --secondary: #2c3e50;
+      --success: #2ecc71;
+      --info: #17a2b8;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #f8f9fa;
+      --dark: #343a40;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6f8;
+    }
+    
+    .sidebar {
+      min-height: 100vh;
+      background: var(--secondary);
+      color: white;
+      transition: all 0.3s;
+      position: fixed;
+      width: 250px;
+      z-index: 1000;
+    }
+    
+    .sidebar-header {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .sidebar ul.components {
+      padding: 20px 0;
+    }
+    
+    .sidebar ul li a {
+      padding: 10px 20px;
+      color: white;
+      display: block;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .sidebar ul li a:hover {
+      color: var(--secondary);
+      background: white;
+    }
+    
+    .sidebar ul li a i {
+      margin-right: 10px;
+    }
+    
+    .sidebar ul li.active > a {
+      color: white;
+      background: var(--primary);
+    }
+    
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+      min-height: 100vh;
+      transition: all 0.3s;
+    }
+    
+    .dashboard-card {
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-icon {
+      font-size: 2rem;
+      opacity: 0.8;
+    }
+    
+    .table-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .breadcrumb {
+      background: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    
+    @media print {
+      .sidebar, .no-print {
+        display: none !important;
+      }
+      .content {
+        margin-left: 0;
+      }
+      body {
+        background: white;
+      }
+      .print-margin {
+        margin: 0;
+        padding: 0;
+      }
+      table {
+        width: 100%;
+      }
+    }
+    
+    /* Invoice styling */
+    .invoice-header {
+      border-bottom: 2px solid #eee;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+    
+    .invoice-address {
+      margin-top: 20px;
+    }
+    
+    .logo-placeholder {
+      width: 120px;
+      height: 120px;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-header d-flex align-items-center">
+        <h3>ERP System</h3>
+      </div>
+      
+      <ul class="list-unstyled components">
+        <li class="active">
+          <a href="#dashboard" id="dashboard-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="#sales" id="sales-link"><i class="fas fa-shopping-cart"></i> Sales</a>
+          <ul class="collapse list-unstyled" id="salesSubmenu">
+            <li><a href="#products"><i class="fas fa-box"></i> Products</a></li>
+            <li><a href="#orders"><i class="fas fa-file-invoice-dollar"></i> Orders</a></li>
+            <li><a href="#returns"><i class="fas fa-undo"></i> Returns</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#inventory" id="inventory-link"><i class="fas fa-warehouse"></i> Inventory</a>
+          <ul class="collapse list-unstyled" id="inventorySubmenu">
+            <li><a href="#stock"><i class="fas fa-boxes"></i> Stock Management</a></li>
+            <li><a href="#alerts"><i class="fas fa-bell"></i> Low Stock Alerts</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#purchasing" id="purchasing-link"><i class="fas fa-shopping-basket"></i> Purchasing</a>
+          <ul class="collapse list-unstyled" id="purchasingSubmenu">
+            <li><a href="#suppliers"><i class="fas fa-truck"></i> Suppliers</a></li>
+            <li><a href="#purchase-orders"><i class="fas fa-clipboard-list"></i> Purchase Orders</a></li>
+            <li><a href="#bills"><i class="fas fa-file-invoice"></i> Bills</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#finance" id="finance-link"><i class="fas fa-money-bill-wave"></i> Finance</a>
+          <ul class="collapse list-unstyled" id="financeSubmenu">
+            <li><a href="#invoices"><i class="fas fa-file-invoice-dollar"></i> Invoices</a></li>
+            <li><a href="#accounting"><i class="fas fa-calculator"></i> Accounting</a></li>
+            <li><a href="#expenses"><i class="fas fa-receipt"></i> Expenses</a></li>
+            <li><a href="#payments"><i class="fas fa-credit-card"></i> Payments</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#hrm" id="hrm-link"><i class="fas fa-users"></i> HRM</a>
+          <ul class="collapse list-unstyled" id="hrmSubmenu">
+            <li><a href="#employees"><i class="fas fa-user-friends"></i> Employees</a></li>
+            <li><a href="#payroll"><i class="fas fa-money-check"></i> Payroll</a></li>
+            <li><a href="#leave"><i class="fas fa-calendar-alt"></i> Leave Management</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#crm" id="crm-link"><i class="fas fa-handshake"></i> CRM</a>
+          <ul class="collapse list-unstyled" id="crmSubmenu">
+            <li><a href="#customers"><i class="fas fa-users"></i> Customers</a></li>
+            <li><a href="#quotations"><i class="fas fa-file-alt"></i> Quotations</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#reports" id="reports-link"><i class="fas fa-chart-line"></i> Reports</a>
+        </li>
+        <li>
+          <a href="#settings" id="settings-link"><i class="fas fa-cog"></i> Settings</a>
+          <ul class="collapse list-unstyled" id="settingsSubmenu">
+            <li><a href="#users"><i class="fas fa-user-shield"></i> User Roles</a></li>
+            <li><a href="#system"><i class="fas fa-sliders-h"></i> System Config</a></li>
+            <li><a href="#backups"><i class="fas fa-database"></i> Backups</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content" class="content">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-white rounded mb-4 no-print">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-light">
+            <i class="fas fa-bars"></i>
+          </button>
+          
+          <div class="d-flex align-items-center">
+            <div class="dropdown me-3">
+              <button class="btn btn-light dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bell"></i>
+                <span class="badge bg-danger rounded-pill">3</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                <li><h6 class="dropdown-header">Notifications</h6></li>
+                <li><a class="dropdown-item" href="#">3 new orders received</a></li>
+                <li><a class="dropdown-item" href="#">2 stock items running low</a></li>
+                <li><a class="dropdown-item" href="#">System maintenance scheduled</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">View all notifications</a></li>
+   
+              </ul>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://placehold.co/40x40" alt="User profile picture - portrait of a business professional" class="rounded-circle me-2">
+                <span>Admin User</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Dashboard Content -->
+      <div id="dashboard-content" class="section-content">
+        <nav aria-label="breadcrumb" class="mb-4 no-print">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><i class="fas fa-home"></i> Dashboard</li>
+          </ol>
+        </nav>
+        
+        <div class="row g-4 mb-4">
+          <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card card border-start border-primary border-5">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="text-muted mb-2">Total Sales</h6>
+                    <h3 class="mb-0">$24,560</h3>
+                    <span class="text-success"><i class="fas fa-arrow-up"></i> 12.5%</span>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-dollar-sign card-icon text-primary"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card card border-start border-success border-5">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="text-muted mb-2">Total Orders</h6>
+                    <h3 class="mb-0">342</h3>
+                    <span class="text-success"><i class="fas fa-arrow-up"></i> 8.2%</span>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-shopping-cart card-icon text-success"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card card border-start border-warning border-5">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="text-muted mb-2">New Customers</h6>
+                    <h3 class="mb-0">56</h3>
+                    <span class="text-success"><i class="fas fa-arrow-up"></i> 3.4%</span>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-users card-icon text-warning"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card card border-start border-danger border-5">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="text-muted mb-2">Low Stock</h6>
+                    <h3 class="mb-0">12</h3>
+                    <span class="text-danger"><i class="fas fa-arrow-down"></i> 5.2%</span>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-box-open card-icon text-danger"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-8">
+            <div class="table-container">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Recent Orders</h5>
+                <a href="#orders" class="btn btn-sm btn-outline-primary">View All</a>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Order #</th>
+                      <th>Customer</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#1245</td>
+                      <td>Acme Corp</td>
+                      <td>Jun 12, 2023</td>
+                      <td>$1,245.00</td>
+                      <td><span class="badge bg-success">Completed</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#1244</td>
+                      <td>Global Tech</td>
+                      <td>Jun 11, 2023</td>
+                      <td>$845.50</td>
+                      <td><span class="badge bg-primary">Processing</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#1243</td>
+                      <td>Delta Solutions</td>
+                      <td>Jun 10, 2023</td>
+                      <td>$2,340.00</td>
+                      <td><span class="badge bg-warning">Pending</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#1242</td>
+                      <td>Horizon LLC</td>
+                      <td>Jun 9, 2023</td>
+                      <td>$1,560.00</td>
+                      <td><span class="badge bg-success">Completed</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#1241</td>
+                      <td>Vertex Systems</td>
+                      <td>Jun 8, 2023</td>
+                      <td>$920.75</td>
+                      <td><span class="badge bg-danger">Cancelled</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="table-container">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Activity Feed</h5>
+                <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-sync-alt"></i></button>
+              </div>
+              <div class="activity-feed">
+                <div class="d-flex mb-3">
+                  <div class="flex-shrink-0">
+                    <img src="https://placehold.co/40x40" alt="User avatar - profile picture of Sarah Johnson" class="rounded-circle me-3">
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Sarah Johnson <small class="text-muted">- 5 min ago</small></h6>
+                    <p class="mb-1">Processed a new order #1245</p>
+                  </div>
+                </div>
+                <div class="d-flex mb-3">
+                  <div class="flex-shrink-0">
+                    <img src="https://placehold.co/40x40" alt="User avatar - profile picture of Michael Chen" class="rounded-circle me-3">
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Michael Chen <small class="text-muted">- 12 min ago</small></h6>
+                    <p class="mb-1">Updated inventory for 7 products</p>
+                  </div>
+                </div>
+                <div class="d-flex mb-3">
+                  <div class="flex-shrink-0">
+                    <img src="https://placehold.co/40x40" alt="User avatar - profile picture of Jessica Williams" class="rounded-circle me-3">
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Jessica Williams <small class="text-muted">- 1 hour ago</small></h6>
+                    <p class="mb-1">Added new customer "Delta Solutions"</p>
+                  </div>
+                </div>
+                <div class="d-flex mb-3">
+                  <div class="flex-shrink-0">
+                    <img src="https://placehold.co/40x40" alt="User avatar - profile picture of David Kim" class="rounded-circle me-3">
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">David Kim <small class="text-muted">- 2 hours ago</small></h6>
+                    <p class="mb-1">Generated monthly financial report</p>
+                  </div>
+                </div>
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <img src="https://placehold.co/40x40" alt="User avatar - profile picture of Robert Taylor" class="rounded-circle me-3">
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Robert Taylor <small class="text-muted">- 3 hours ago</small></h6>
+                    <p class="mb-1">Created a new purchase order #345</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="table-container">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Sales Overview</h5>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-outline-secondary active">Week</button>
+                  <button class="btn btn-sm btn-outline-secondary">Month</button>
+                  <button class="btn btn-sm btn-outline-secondary">Year</button>
+                </div>
+              </div>
+              <canvas id="salesChart" height="250"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="table-container">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Revenue by Category</h5>
+                <div>
+                  <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                </div>
+              </div>
+              <canvas id="revenueChart" height="250"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sales Module -->
+      <div id="sales-content" class="section-content d-none">
+        <!-- Sales content would go here -->
+        <h2>Sales Module</h2>
+      </div>
+
+      <!-- Inventory Module -->
+      <div id="inventory-content" class="section-content d-none">
+        <!-- Inventory content would go here -->
+        <h2>Inventory Module</h2>
+      </div>
+
+      <!-- Invoice Template (Hidden by default) -->
+      <div id="invoice-template" class="section-content d-none print-margin">
+        <div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+          <div class="invoice-header d-flex justify-content-between">
+            <div class="logo-placeholder">
+              <div>Company Logo</div>
+            </div>
+            <div class="text-end">
+              <h1>INVOICE</h1>
+              <p class="mb-0"><strong>Invoice #:</strong> INV-2023-1245</p>
+              <p class="mb-0"><strong>Date:</strong> June 15, 2023</p>
+              <p class="mb-0"><strong>Due Date:</strong> July 15, 2023</p>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <h5>From:</h5>
+              <p>
+                <strong>Your Company Name</strong><br>
+                123 Business Street<br>
+                City, State ZIP<br>
+                Phone: (123) 456-7890<br>
+                Email: accounting@yourcompany.com
+              </p>
+            </div>
+            <div class="col-md-6">
+              <h5>To:</h5>
+              <p>
+                <strong>Acme Corporation</strong><br>
+                456 Customer Avenue<br>
+                City, State ZIP<br>
+                Phone: (987) 654-3210<br>
+                Email: accounts@acmecorp.com
+              </p>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <table class="table">
+              <thead class="table-light">
+                <tr>
+                  <th>Item</th>
+                  <th>Description</th>
+                  <th>Qty</th>
+                  <th>Unit Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1001</td>
+                  <td>Premium Widget</td>
+                  <td>2</td>
+                  <td>$120.00</td>
+                  <td>$240.00</td>
+                </tr>
+                <tr>
+                  <td>1005</td>
+                  <td>Deluxe Gadget</td>
+                  <td>1</td>
+                  <td>$195.00</td>
+                  <td>$195.00</td>
+                </tr>
+                <tr>
+                  <td>1010</td>
+                  <td>Standard Component</td>
+                  <td>5</td>
+                  <td>$25.50</td>
+                  <td>$127.50</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" class="text-end"><strong>Subtotal:</strong></td>
+                  <td>$562.50</td>
+                </tr>
+                <tr>
+                  <td colspan="4" class="text-end"><strong>Tax (8%):</strong></td>
+                  <td>$45.00</td>
+                </tr>
+                <tr>
+                  <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                  <td>$607.50</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          <div class="mt-4 pt-4 border-top">
+            <p><strong>Payment Terms:</strong> Net 30 days. Please make checks payable to Your Company Name.</p>
+            <p><strong>Bank Details:</strong> Bank Name, Account #: 123456789, Routing #: 987654321</p>
+            <p class="mb-0">Thank you for your business!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="quick-actions d-none no-print">
+        <button class="btn btn-primary rounded-circle" data-bs-toggle="modal" data-bs-target="#quickActionModal">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+
+      <!-- Quick Action Modal -->
+      <div class="modal fade" id="quickActionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Quick Actions</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-6">
+                  <button class="btn btn-outline-primary w-100 py-3">
+                    <i class="fas fa-file-invoice-dollar fa-2x mb-2"></i>
+                    <br>
+                    New Invoice
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-outline-success w-100 py-3">
+                    <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                    <br>
+                    New Order
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-outline-info w-100 py-3">
+                    <i class="fas fa-user-plus fa-2x mb-2"></i>
+                    <br>
+                    New Customer
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-outline-warning w-100 py-3">
+                    <i class="fas fa-box fa-2x mb-2"></i>
+                    <br>
+                    New Product
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+    // Toggle sidebar
+    document.getElementById('sidebarCollapse').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('active')
+      document.getElementById('content').classList.toggle('active')
+    })
+
+    // Close collapse when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+      const isClickInsideSidebar = document.getElementById('sidebar').contains(event.target)
+      const isClickOnToggleButton = event.target === document.getElementById('sidebarCollapse') || 
+                                  document.getElementById('sidebarCollapse').contains(event.target)
+      
+      if (!isClickInsideSidebar && !isClickOnToggleButton && window.innerWidth < 992) {
+        document.getElementById('sidebar').classList.remove('active')
+        document.getElementById('content').classList.remove('active')
+      }
+    })
+
+    // Navigation handling
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        // Handle submenu toggles
+        if (this.getAttribute('data-bs-toggle') === 'collapse') {
+          e.preventDefault()
+          const submenu = document.querySelector(this.getAttribute('href'))
+          new bootstrap.Collapse(submenu, { toggle: true })
+        }
+        
+        // Set active state
+        document.querySelectorAll('.sidebar li').forEach(item => {
+          item.classList.remove('active')
+        })
+        
+        // Handle different menu structures
+        if (this.closest('li').querySelector('ul.collapse')) {
+          this.closest('li').classList.add('active')
+        } else {
+          this.closest('li').classList.add('active')
+        }
+        
+        // Show the appropriate content section
+        const sectionId = this.getAttribute('href').substring(1) + '-content'
+        document.querySelectorAll('.section-content').forEach(section => {
+          section.classList.add('d-none')
+        })
+        
+        if (sectionId !== '-content') {
+          document.getElementById(sectionId).classList.remove('d-none')
+        }
+      })
+    })
+
+    // Initialize charts when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sales Chart
+      const salesCtx = document.getElementById('salesChart').getContext('2d')
+      const salesChart = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Sales ($)',
+            data: [1200, 1900, 1700, 2100, 2300, 1800, 1500],
+            backgroundColor: 'rgba(52, 152, 219, 0.2)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      })
+
+      // Revenue Chart
+      const revenueCtx = document.getElementById('revenueChart').getContext('2d')
+      const revenueChart = new Chart(revenueCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Electronics', 'Furniture', 'Clothing', 'Office Supplies', 'Other'],
+          datasets: [{
+            data: [1560, 890, 1240, 750, 420],
+            backgroundColor: [
+              'rgba(52, 152, 219, 0.8)',
+              'rgba(46, 204, 113, 0.8)',
+              'rgba(241, 196, 15, 0.8)',
+              'rgba(155, 89, 182, 0.8)',
+              'rgba(231, 76, 60, 0.8)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      })
+    })
+
+    // Sample print function for invoice
+    function printInvoice() {
+      document.getElementById('invoice-template').classList.remove('d-none')
+      window.print()
+      document.getElementById('invoice-template').classList.add('d-none')
+    }
+
+    // Demo function to show quick actions after 5 seconds
+    setTimeout(() => {
+      document.querySelector('.quick-actions').classList.remove('d-none')
+    }, 5000)
+  </script>
+</body>
+</html>

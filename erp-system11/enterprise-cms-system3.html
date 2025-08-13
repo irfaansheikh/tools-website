@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise CMS - Complete Business Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            overflow-y: auto;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-header h1 {
+            opacity: 0;
+        }
+
+        .sidebar-toggle {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-section {
+            margin-bottom: 30px;
+        }
+
+        .menu-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.7);
+            padding: 0 20px 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-section-title {
+            opacity: 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #60a5fa;
+            color: white;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item span {
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            opacity: 0;
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .submenu.open {
+            max-height: 200px;
+        }
+
+        .submenu-item {
+            padding: 8px 20px 8px 52px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .submenu-item:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        /* Cards and Components */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            background: #f8fafc;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: #059669;
+        }
+
+        .stat-change.negative {
+            color: #dc2626;
+        }
+
+        .blue-gradient { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .green-gradient { background: linear-gradient(135deg, #10b981, #059669); }
+        .yellow-gradient { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .red-gradient { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .purple-gradient { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .indigo-gradient { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        /* Status badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        .close-btn:hover {
+            background: #f1f5f9;
+        }
+
+        /* Charts placeholder */
+        .chart-container {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar .menu-item span,
+            .sidebar .menu-section-title,
+            .sidebar .sidebar-header h1 {
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                z-index: 1000;
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .action-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-chart-line" style="font-size: 1.5rem;"></i>
+                <h1>Enterprise CMS</h1>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-menu">
+                <!-- Dashboard Section -->
+                <div class="menu-section">
+                    <div class="menu-section-title">Dashboard</div>
+                    <a href="#" class="menu-item active" onclick="showPage('dashboard')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('analytics')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('reports')">
+                        <i class="fas fa-file-chart-pie"></i>
+                        <span>Overall Reports</span>
+                    </a>
+                </div>
+
+                <!-- Sales & Invoicing -->
+                <div class="menu-section">
+                    <div class="menu-section-title">Sales & Invoicing</div>
+                    <a href="#" class="menu-item" onclick="showPage('invoices')">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>Invoices</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('sales')">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Sales</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('quotations')">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Quotations</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('returns')">
+                        <i class="fas fa-undo"></i>
+                        <span>Returns</span>
+                    </a>
+                </div>
+
+                <!-- Inventory & Products -->
+                <div class="menu-section">
+                    <div class="menu-section-title">Inventory</div>
+                    <a href="#" class="menu-item" onclick="showPage('inventory')">
+                        <i class="fas fa-boxes"></i>
+                        <span>Inventory</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('products')">
+                        <i class="fas fa-cube"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('categories')">
+                        <i class="fas fa-tags"></i>
+                        <span>Categories</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('suppliers')">
+                        <i class="fas fa-truck"></i>
+                        <span>Suppliers</span>
+                    </a>
+                </div>
+
+                <!-- Purchase & Bills -->
+                <div class="menu-section">
+                    <div class="menu-section-title">Purchasing</div>
+                    <a href="#" class="menu-item" onclick="showPage('purchases')">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Purchases</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('bills')">
+                        <i class="fas fa-receipt"></i>
+                        <span>Bills</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('purchase-orders')">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                </div>
+
+                <!-- Financial Management -->
+                <div class="menu-section">
+                    <div class="menu-section-title">Finance</div>
+                    <a href="#" class="menu-item" onclick="showPage('accounting')">
+                        <i class="fas fa-calculator"></i>
+                        <span>Accounting</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('budgeting')">
+                        <i class="fas fa-piggy-bank"></i>
+                        <span>Budgeting</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('expenses')">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Expenses</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('payments')">
+                        <i class="fas fa-money-check-alt"></i>
+                        <span>Payments</span>
+                    </a>
+                </div>
+
+                <!-- People Management -->
+                <div class="menu-section">
+                    <div class="menu-section-title">People</div>
+                    <a href="#" class="menu-item" onclick="showPage('customers')">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('hrm')">
+                        <i class="fas fa-user-tie"></i>
+                        <span>HRM</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('employees')">
+                        <i class="fas fa-id-card"></i>
+                        <span>Employees</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('payroll')">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Payroll</span>
+                    </a>
+                </div>
+
+                <!-- System -->
+                <div class="menu-section">
+                    <div class="menu-section-title">System</div>
+                    <a href="#" class="menu-item" onclick="showPage('settings')">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('users')">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Users</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="showPage('backups')">
+                        <i class="fas fa-database"></i>
+                        <span>Backups</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <i class="fas fa-home"></i>
+                        <span>/</span>
+                        <span id="currentPage">Dashboard</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-profile">
+                        <div class="user-avatar">JD</div>
+                        <div>
+                            <div style="font-weight: 600;">John Doe</div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Administrator</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Page -->
+                <div id="dashboard" class="page active">
+                    <div class="page-header">
+                        <h1 class="page-title">Dashboard Overview</h1>
+                        <p class="page-subtitle">Welcome back! Here's what's happening with your business today.</p>
+                    </div>
+
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="showPage('invoices')">
+                            <i class="fas fa-plus"></i>
+                            New Invoice
+                        </button>
+                        <button class="action-btn" onclick="showPage('products')">
+                            <i class="fas fa-plus"></i>
+                            Add Product
+                        </button>
+                        <button class="action-btn" onclick="showPage('customers')">
+                            <i class="fas fa-plus"></i>
+                            Add Customer
+                        </button>
+                        <button class="action-btn" onclick="showPage('expenses')">
+                            <i class="fas fa-plus"></i>
+                            Add Expense
+                        </button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue-gradient">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$245,630</h3>
+                                <p>Total Revenue</p>
+                                <div class="stat-change positive">+12.5% from last month</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon green-gradient">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>1,248</h3>
+                                <p>Total Sales</p>
+                                <div class="stat-change positive">+8.2% from last month</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon yellow-gradient">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$18,450</h3>
+                                <p>Pending Invoices</p>
+                                <div class="stat-change negative">-3.1% from last month</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon red-gradient">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>847</h3>
+                                <p>Products in Stock</p>
+                                <div class="stat-change positive">+2.4% from last month</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon purple-gradient">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>2,149</h3>
+                                <p>Total Customers</p>
+                                <div class="stat-change positive">+15.3% from last month</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon indigo-gradient">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>47</h3>
+                                <p>Active Employees</p>
+                                <div class="stat-change positive">+2 new hires</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                Sales Overview
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                📊 Sales Chart (Integration with Chart.js or similar)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-clock"></i>
+                                    Recent Activities
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="activity-list">
+                                    <div class="activity-item" style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                                        <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600;">Invoice INV-2045 paid</div>
+                                            <div style="font-size: 0.8rem; color: #64748b;">2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item" style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                                        <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 50%;"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600;">New product added</div>
+                                            <div style="font-size: 0.8rem; color: #64748b;">4 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item" style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                                        <div style="width: 8px; height: 8px; background: #f59e0b; border-radius: 50%;"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600;">Low stock alert</div>
+                                            <div style="font-size: 0.8rem; color: #64748b;">6 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item" style="display: flex; align-items: center; gap: 12px; padding: 12px 0;">
+                                        <div style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600;">Payment overdue</div>
+                                            <div style="font-size: 0.8rem; color: #64748b;">1 day ago</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Quick Actions Needed
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert-list">
+                                    <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                                        <div style="font-weight: 600; color: #92400e;">3 Overdue Invoices</div>
+                                        <div style="font-size: 0.9rem; color: #92400e;">Total: $8,450 - Requires immediate attention</div>
+                                    </div>
+                                    <div style="background: #fee2e2; border: 1px solid #ef4444; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                                        <div style="font-weight: 600; color: #991b1b;">Low Stock Items</div>
+                                        <div style="font-size: 0.9rem; color: #991b1b;">12 products below minimum threshold</div>
+                                    </div>
+                                    <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 12px;">
+                                        <div style="font-weight: 600; color: #1e40af;">Pending Approvals</div>
+                                        <div style="font-size: 0.9rem; color: #1e40af;">5 purchase orders awaiting approval</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoices Page -->
+                <div id="invoices" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Invoice Management</h1>
+                        <p class="page-subtitle">Create, manage, and track all your invoices</p>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <div style="display: flex; gap: 12px;">
+                            <button class="btn">
+                                <i class="fas fa-plus"></i>
+                                New Invoice
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <input type="search" placeholder="Search invoices..." class="form-control" style="width: 200px;">
+                            <select class="form-control" style="width: 120px;">
+                                <option>All Status</option>
+                                <option>Paid</option>
+                                <option>Pending</option>
+                                <option>Overdue</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice #</th>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Due Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>INV-2045</strong></td>
+                                            <td>Acme Corporation</td>
+                                            <td>Aug 05, 2025</td>
+                                            <td>Sep 04, 2025</td>
+                                            <td>$3,540.00</td>
+                                            <td><span class="badge badge-success">Paid</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" title="Print">
+                                                    <i class="fas fa-print"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>INV-2046</strong></td>
+                                            <td>TechStart Inc.</td>
+                                            <td>Aug 06, 2025</td>
+                                            <td>Aug 21, 2025</td>
+                                            <td>$1,668.82</td>
+                                            <td><span class="badge badge-warning">Pending</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" title="Print">
+                                                    <i class="fas fa-print"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>INV-2047</strong></td>
+                                            <td>Digital Solutions</td>
+                                            <td>Aug 07, 2025</td>
+                                            <td>Aug 22, 2025</td>
+                                            <td>$2,832.00</td>
+                                            <td><span class="badge badge-danger">Overdue</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" title="Print">
+                                                    <i class="fas fa-print"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Page -->
+                <div id="products" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Product Management</h1>
+                        <p class="page-subtitle">Manage your product catalog and inventory</p>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <div style="display: flex; gap: 12px;">
+                            <button class="btn">
+                                <i class="fas fa-plus"></i>
+                                Add Product
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-upload"></i>
+                                Import CSV
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                    <div style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-laptop" style="font-size: 24px; color: #6b7280;"></i>
+                                    </div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 4px;">MacBook Pro</h3>
+                                        <p style="color: #64748b; font-size: 0.9rem;">Electronics</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 1.2rem; font-weight: 700; color: #1e293b;">$2,999.00</span>
+                                    <span class="badge badge-success">In Stock</span>
+                                </div>
+                                <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 16px;">
+                                    Quantity: 15 units
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                    <div style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-mobile-alt" style="font-size: 24px; color: #6b7280;"></i>
+                                    </div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 4px;">iPhone 15 Pro</h3>
+                                        <p style="color: #64748b; font-size: 0.9rem;">Electronics</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 1.2rem; font-weight: 700; color: #1e293b;">$1,199.00</span>
+                                    <span class="badge badge-warning">Low Stock</span>
+                                </div>
+                                <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 16px;">
+                                    Quantity: 3 units
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                    <div style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-headphones" style="font-size: 24px; color: #6b7280;"></i>
+                                    </div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 4px;">AirPods Pro</h3>
+                                        <p style="color: #64748b; font-size: 0.9rem;">Accessories</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 1.2rem; font-weight: 700; color: #1e293b;">$249.00</span>
+                                    <span class="badge badge-success">In Stock</span>
+                                </div>
+                                <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 16px;">
+                                    Quantity: 45 units
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Page -->
+                <div id="inventory" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Inventory Management</h1>
+                        <p class="page-subtitle">Track and manage your inventory levels</p>
+                    </div>
+
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                        <div class="stat-card">
+                            <div class="stat-icon blue-gradient">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>847</h3>
+                                <p>Total Products</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green-gradient">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>723</h3>
+                                <p>In Stock</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon yellow-gradient">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>89</h3>
+                                <p>Low Stock</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red-gradient">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>35</h3>
+                                <p>Out of Stock</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-list"></i>
+                                Inventory Status
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>SKU</th>
+                                            <th>Category</th>
+                                            <th>Current Stock</th>
+                                            <th>Min. Stock</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>MacBook Pro 16"</td>
+                                            <td>MBP-16-2024</td>
+                                            <td>Electronics</td>
+                                            <td>15</td>
+                                            <td>10</td>
+                                            <td><span class="badge badge-success">Good Stock</span></td>
+                                            <td>
+                                                <button class="btn btn-sm">
+                                                    <i class="fas fa-plus"></i>
+                                                    Restock
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>iPhone 15 Pro</td>
+                                            <td>IP-15P-2024</td>
+                                            <td>Electronics</td>
+                                            <td>3</td>
+                                            <td>5</td>
+                                            <td><span class="badge badge-warning">Low Stock</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-exclamation"></i>
+                                                    Urgent Restock
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>AirPods Pro</td>
+                                            <td>APP-2024</td>
+                                            <td>Accessories</td>
+                                            <td>0</td>
+                                            <td>20</td>
+                                            <td><span class="badge badge-danger">Out of Stock</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-times"></i>
+                                                    Emergency Order
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Page -->
+                <div id="sales" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Sales Management</h1>
+                        <p class="page-subtitle">Track and manage all your sales transactions</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue-gradient">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$245,630</h3>
+                                <p>Total Sales (This Month)</p>
+                                <div class="stat-change positive">+12.5% vs last month</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green-gradient">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>1,248</h3>
+                                <p>Orders Completed</p>
+                                <div class="stat-change positive">+8.2% vs last month</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon yellow-gradient">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$197</h3>
+                                <p>Average Order Value</p>
+                                <div class="stat-change positive">+3.7% vs last month</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-receipt"></i>
+                                Recent Sales
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Items</th>
+                                            <th>Amount</th>
+                                            <th>Payment</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>ORD-5432</strong></td>
+                                            <td>John Smith</td>
+                                            <td>Aug 08, 2025</td>
+                                            <td>3 items</td>
+                                            <td>$459.00</td>
+                                            <td><span class="badge badge-success">Paid</span></td>
+                                            <td><span class="badge badge-info">Shipped</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ORD-5433</strong></td>
+                                            <td>Sarah Johnson</td>
+                                            <td>Aug 08, 2025</td>
+                                            <td>1 item</td>
+                                            <td>$1,299.00</td>
+                                            <td><span class="badge badge-success">Paid</span></td>
+                                            <td><span class="badge badge-warning">Processing</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounting Page -->
+                <div id="accounting" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Accounting & Finance</h1>
+                        <p class="page-subtitle">Monitor your financial health and transactions</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue-gradient">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$125,430</h3>
+                                <p>Cash Balance</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green-gradient">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$245,630</h3>
+                                <p>Total Income</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red-gradient">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$89,250</h3>
+                                <p>Total Expenses</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple-gradient">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>$156,380</h3>
+                                <p>Net Profit</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-chart-bar"></i>
+                                    Income vs Expenses
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    📊 Income/Expense Chart
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-list-alt"></i>
+                                    Account Summary
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                                    <span>Cash & Bank</span>
+                                    <span style="font-weight: 600;">$125,430.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                                    <span>Accounts Receivable</span>
+                                    <span style="font-weight: 600;">$45,250.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                                    <span>Inventory</span>
+                                    <span style="font-weight: 600;">$189,750.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                                    <span>Accounts Payable</span>
+                                    <span style="font-weight: 600; color: #ef4444;">($23,150.00)</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px 0; font-weight: 700; font-size: 1.1rem;">
+                                    <span>Net Worth</span>
+                                    <span>$337,280.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HRM Page -->
+                <div id="hrm" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Human Resource Management</h1>
+                        <p class="page-subtitle">Manage employees, payroll, and HR processes</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue-gradient">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>47</h3>
+                                <p>Total Employees</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green-gradient">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>3</h3>
+                                <p>New Hires (This Month)</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon yellow-gradient">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>5</h3>
+                                <p>On Leave Today</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red-gradient">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>12</h3>
+                                <p>Pending Requests</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-id-card"></i>
+                                    Employee Directory
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Department</th>
+                                                <th>Position</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <div class="user-avatar" style="width: 32px; height: 32px;">JD</div>
+                                                        <div>
+                                                            <div style="font-weight: 600;">John Doe</div>
+                                                            <div style="font-size: 0.8rem; color: #64748b;">john@company.com</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>IT</td>
+                                                <td>Senior Developer</td>
+                                                <td><span class="badge badge-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-secondary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <div class="user-avatar" style="width: 32px; height: 32px;">SM</div>
+                                                        <div>
+                                                            <div style="font-weight: 600;">Sarah Miller</div>
+                                                            <div style="font-size: 0.8rem; color: #64748b;">sarah@company.com</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>Marketing</td>
+                                                <td>Marketing Manager</td>
+                                                <td><span class="badge badge-warning">On Leave</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-secondary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-bell"></i>
+                                    HR Notifications
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin-bottom: 12px; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #92400e;">Leave Request</div>
+                                    <div style="font-size: 0.9rem; color: #92400e;">Mike Johnson - Vacation Leave</div>
+                                </div>
+                                <div style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 12px; margin-bottom: 12px; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #1e40af;">Performance Review</div>
+                                    <div style="font-size: 0.9rem; color: #1e40af;">Due: Emma Wilson</div>
+                                </div>
+                                <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #991b1b;">Contract Expiry</div>
+                                    <div style="font-size: 0.9rem; color: #991b1b;">Alex Brown - 30 days</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settings" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">System Settings</h1>
+                        <p class="page-subtitle">Configure system preferences and options</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 24px;">
+                        <div class="card" style="height: fit-content;">
+                            <div class="card-body">
+                                <div class="settings-menu">
+                                    <a href="#" class="menu-item active" onclick="showSettingsTab('general')">
+                                        <i class="fas fa-cog"></i>
+                                        <span>General</span>
+                                    </a>
+                                    <a href="#" class="menu-item" onclick="showSettingsTab('company')">
+                                        <i class="fas fa-building"></i>
+                                        <span>Company Info</span>
+                                    </a>
+                                    <a href="#" class="menu-item" onclick="showSettingsTab('users')">
+                                        <i class="fas fa-users-cog"></i>
+                                        <span>User Management</span>
+                                    </a>
+                                    <a href="#" class="menu-item" onclick="showSettingsTab('integrations')">
+                                        <i class="fas fa-plug"></i>
+                                        <span>Integrations</span>
+                                    </a>
+                                    <a href="#" class="menu-item" onclick="showSettingsTab('backup')">
+                                        <i class="fas fa-database"></i>
+                                        <span>Backup & Security</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-cog"></i>
+                                    General Settings
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">System Name</label>
+                                        <input type="text" class="form-control" value="Enterprise CMS">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Time Zone</label>
+                                        <select class="form-control">
+                                            <option>UTC-5 (Eastern Time)</option>
+                                            <option>UTC-8 (Pacific Time)</option>
+                                            <option>UTC+0 (GMT)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Currency</label>
+                                        <select class="form-control">
+                                            <option>USD ($)</option>
+                                            <option>EUR (€)</option>
+                                            <option>GBP (£)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Date Format</label>
+                                        <select class="form-control">
+                                            <option>MM/DD/YYYY</option>
+                                            <option>DD/MM/YYYY</option>
+                                            <option>YYYY-MM-DD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn">
+                                    <i class="fas fa-save"></i>
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Page -->
+                <div id="reports" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Overall Reports</h1>
+                        <p class="page-subtitle">Comprehensive business reporting and analytics</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                        <div class="card" style="cursor: pointer;" onclick="generateReport('sales')">
+                            <div class="card-body" style="text-align: center;">
+                                <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                                    <i class="fas fa-chart-line" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                                <h3 style="font-weight: 600; margin-bottom: 8px;">Sales Report</h3>
+                                <p style="color: #64748b;">Detailed sales analysis and trends</p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="cursor: pointer;" onclick="generateReport('inventory')">
+                            <div class="card-body" style="text-align: center;">
+                                <div style="background: linear-gradient(135deg, #10b981, #059669); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                                    <i class="fas fa-boxes" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                                <h3 style="font-weight: 600; margin-bottom: 8px;">Inventory Report</h3>
+                                <p style="color: #64748b;">Stock levels and movement analysis</p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="cursor: pointer;" onclick="generateReport('financial')">
+                            <div class="card-body" style="text-align: center;">
+                                <div style="background: linear-gradient(135deg, #f59e0b, #d97706); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                                    <i class="fas fa-calculator" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                                <h3 style="font-weight: 600; margin-bottom: 8px;">Financial Report</h3>
+                                <p style="color: #64748b;">P&L, balance sheet, cash flow</p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="cursor: pointer;" onclick="generateReport('customer')">
+                            <div class="card-body" style="text-align: center;">
+                                <div style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                                    <i class="fas fa-users" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                                <h3 style="font-weight: 600; margin-bottom: 8px;">Customer Report</h3>
+                                <p style="color: #64748b;">Customer analytics and behavior</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-file-alt"></i>
+                                Recent Reports
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Report Name</th>
+                                            <th>Type</th>
+                                            <th>Generated</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Monthly Sales Summary</td>
+                                            <td>Sales</td>
+                                            <td>Aug 01, 2025</td>
+                                            <td><span class="badge badge-success">Complete</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary">
+                                                    <i class="fas fa-download"></i>
+                                                    Download
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inventory Valuation</td>
+                                            <td>Inventory</td>
+                                            <td>Aug 05, 2025</td>
+                                            <td><span class="badge badge-warning">Processing</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary" disabled>
+                                                    <i class="fas fa-spinner fa-spin"></i>
+                                                    Processing
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other pages placeholders -->
+                <div id="analytics" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Business Analytics</h1>
+                        <p class="page-subtitle">Deep insights into your business performance</p>
+                    </div>
+                    <div class="chart-container" style="height: 400px;">
+                        📊 Advanced Analytics Dashboard - Integration with Chart.js, D3.js
+                    </div>
+                </div>
+
+                <div id="budgeting" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Budget Management</h1>
+                        <p class="page-subtitle">Plan and track your business budget</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Budget planning and tracking functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="customers" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Customer Management</h1>
+                        <p class="page-subtitle">Manage customer relationships and data</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Customer management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="purchases" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Purchase Management</h1>
+                        <p class="page-subtitle">Manage supplier purchases and orders</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Purchase management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bills" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Bills & Payments</h1>
+                        <p class="page-subtitle">Track bills and manage payments to suppliers</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Bills and payments functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="returns" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Returns Management</h1>
+                        <p class="page-subtitle">Handle product returns and refunds</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Returns management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add more page placeholders for other modules -->
+                <div id="quotations" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Quotations</h1>
+                        <p class="page-subtitle">Create and manage price quotations</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Quotations functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="categories" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Product Categories</h1>
+                        <p class="page-subtitle">Organize products into categories</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Product categories functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="suppliers" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Supplier Management</h1>
+                        <p class="page-subtitle">Manage supplier relationships and data</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Supplier management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="expenses" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Expense Management</h1>
+                        <p class="page-subtitle">Track and manage business expenses</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Expense management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="payments" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Payment Processing</h1>
+                        <p class="page-subtitle">Handle payments and transactions</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Payment processing functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="employees" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Employee Management</h1>
+                        <p class="page-subtitle">Detailed employee records and management</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Employee management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="payroll" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Payroll Management</h1>
+                        <p class="page-subtitle">Process employee payroll and salaries</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Payroll management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="users" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">User Management</h1>
+                        <p class="page-subtitle">Manage system users and permissions</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>User management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="backups" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Backup Management</h1>
+                        <p class="page-subtitle">System backups and data recovery</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Backup management functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="purchase-orders" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Purchase Orders</h1>
+                        <p class="page-subtitle">Create and manage purchase orders</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Purchase orders functionality would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentPage = 'dashboard';
+
+        // Navigation functions
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update breadcrumb
+            document.getElementById('currentPage').textContent = getPageTitle(pageId);
+            
+            currentPage = pageId;
+        }
+
+        function getPageTitle(pageId) {
+            const titles = {
+                'dashboard': 'Dashboard',
+                'analytics': 'Analytics',
+                'reports': 'Reports',
+                'invoices': 'Invoices',
+                'sales': 'Sales',
+                'quotations': 'Quotations',
+                'returns': 'Returns',
+                'inventory': 'Inventory',
+                'products': 'Products',
+                'categories': 'Categories',
+                'suppliers': 'Suppliers',
+                'purchases': 'Purchases',
+                'bills': 'Bills',
+                'purchase-orders': 'Purchase Orders',
+                'accounting': 'Accounting',
+                'budgeting': 'Budgeting',
+                'expenses': 'Expenses',
+                'payments': 'Payments',
+                'customers': 'Customers',
+                'hrm': 'HRM',
+                'employees': 'Employees',
+                'payroll': 'Payroll',
+                'settings': 'Settings',
+                'users': 'Users',
+                'backups': 'Backups'
+            };
+            return titles[pageId] || 'Unknown';
+        }
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Settings functions
+        function showSettingsTab(tabId) {
+            // Implementation for settings tabs
+            console.log('Show settings tab:', tabId);
+        }
+
+        // Report generation
+        function generateReport(reportType) {
+            alert(`Generating ${reportType} report... This would integrate with backend reporting engine.`);
+        }
+
+        // Initialize responsive behavior
+        function initializeResponsive() {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.add('collapsed');
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeResponsive();
+        });
+
+        window.addEventListener('resize', function() {
+            initializeResponsive();
+        });
+
+        // Sample functions for demonstration
+        function handleQuickAction(action) {
+            alert(`Quick action: ${action} - This would open the appropriate form/modal.`);
+        }
+    </script>
+</body>
+</html>

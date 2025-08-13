@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP/CMS System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-brand h4 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .sidebar-nav {
+            padding: 0;
+            list-style: none;
+        }
+
+        .sidebar-nav .nav-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-nav .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-nav .nav-link:hover,
+        .sidebar-nav .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .sidebar-nav .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        .topbar {
+            background: white;
+            height: var(--header-height);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .stats-card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .stats-card h3 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stats-card p {
+            margin: 5px 0 0 0;
+            color: #6c757d;
+        }
+
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+
+        @media print {
+            .sidebar, .topbar, .btn, .modal {
+                display: none !important;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .print-only {
+                display: block !important;
+            }
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        .alert-low-stock {
+            background-color: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to ERP System</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" value="admin" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" value="admin123" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h4><i class="fas fa-business-time"></i> ERP System</h4>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="sales">
+                    <i class="fas fa-shopping-cart"></i> Sales
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="products">
+                    <i class="fas fa-box"></i> Products
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="vendors">
+                    <i class="fas fa-truck"></i> Vendors
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="inventory">
+                    <i class="fas fa-warehouse"></i> Inventory
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="purchasing">
+                    <i class="fas fa-clipboard-list"></i> Purchasing
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="finance">
+                    <i class="fas fa-dollar-sign"></i> Finance
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="hrm">
+                    <i class="fas fa-users"></i> HRM
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="crm">
+                    <i class="fas fa-handshake"></i> CRM
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <div class="topbar">
+            <button class="btn btn-outline-secondary me-3" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h5 class="mb-0 flex-grow-1" id="pageTitle">Dashboard</h5>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fas fa-user"></i> Admin
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Dashboard Section -->
+            <div class="page-section active" id="dashboard">
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-primary text-white stats-card">
+                            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                            <h3 id="totalSales">$125,430</h3>
+                            <p>Total Sales</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-success text-white stats-card">
+                            <div class="icon"><i class="fas fa-shopping-cart"></i></div>
+                            <h3 id="totalOrders">342</h3>
+                            <p>Orders</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-info text-white stats-card">
+                            <div class="icon"><i class="fas fa-box"></i></div>
+                            <h3 id="totalProducts">1,248</h3>
+                            <p>Products</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-warning text-white stats-card">
+                            <div class="icon"><i class="fas fa-users"></i></div>
+                            <h3 id="totalCustomers">892</h3>
+                            <p>Customers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Sales Overview</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" onclick="showPage('sales')">
+                                        <i class="fas fa-plus"></i> New Sale
+                                    </button>
+                                    <button class="btn btn-success" onclick="showPage('products')">
+                                        <i class="fas fa-box"></i> Add Product
+                                    </button>
+                                    <button class="btn btn-info" onclick="showPage('crm')">
+                                        <i class="fas fa-user-plus"></i> New Customer
+                                    </button>
+                                    <button class="btn btn-warning" onclick="showPage('reports')">
+                                        <i class="fas fa-chart-bar"></i> View Reports
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Low Stock Alerts</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="lowStockAlerts"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Section -->
+            <div class="page-section" id="sales">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Sales Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesModal">
+                        <i class="fas fa-plus"></i> New Sale
+                    </button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-shopping-cart text-primary" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Sales Orders</h5>
+                                <p class="text-muted">Manage all sales orders</p>
+                                <button class="btn btn-outline-primary" onclick="showSalesOrders()">View Orders</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-undo text-warning" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Returns</h5>
+                                <p class="text-muted">Handle product returns</p>
+                                <button class="btn btn-outline-warning" onclick="showReturns()">View Returns</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-box-open text-info" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Product Catalog</h5>
+                                <p class="text-muted">Browse available products</p>
+                                <button class="btn btn-outline-info" onclick="showProductCatalog()">View Catalog</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Recent Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="salesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="salesTableBody">
+                                    <!-- Sales data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div class="page-section" id="products">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Product Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+
+                <div class="row" id="productsGrid">
+                    <!-- Products will be populated here -->
+                </div>
+            </div>
+
+            <!-- Vendors Section -->
+            <div class="page-section" id="vendors">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Vendor Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vendorModal">
+                        <i class="fas fa-plus"></i> Add Vendor
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="vendorsTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Company Name</th>
+                                        <th>Contact Person</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vendorsTableBody">
+                                    <!-- Vendors data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <div class="page-section" id="inventory">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Inventory Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stockModal">
+                        <i class="fas fa-plus"></i> Update Stock
+                    </button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h4>1,248</h4>
+                                <p>Total Items</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body text-center">
+                                <h4>23</h4>
+                                <p>Low Stock</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-danger text-white">
+                            <div class="card-body text-center">
+                                <h4>7</h4>
+                                <p>Out of Stock</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center">
+                                <h4>$45,320</h4>
+                                <p>Stock Value</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="inventoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>SKU</th>
+                                        <th>Current Stock</th>
+                                        <th>Min Stock</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Value</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTableBody">
+                                    <!-- Inventory data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchasing Section -->
+            <div class="page-section" id="purchasing">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Purchasing Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal">
+                        <i class="fas fa-plus"></i> New Purchase Order
+                    </button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-invoice text-primary" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Purchase Orders</h5>
+                                <button class="btn btn-outline-primary" onclick="showPurchaseOrders()">View Orders</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-receipt text-success" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Bills</h5>
+                                <button class="btn btn-outline-success" onclick="showBills()">View Bills</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-truck text-info" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Suppliers</h5>
+                                <button class="btn btn-outline-info" onclick="showSuppliers()">View Suppliers</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finance Section -->
+            <div class="page-section" id="finance">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Finance Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                        <i class="fas fa-plus"></i> New Invoice
+                    </button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-invoice-dollar text-primary" style="font-size: 2rem;"></i>
+                                <h6 class="mt-2">Invoices</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calculator text-success" style="font-size: 2rem;"></i>
+                                <h6 class="mt-2">Accounting</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-pie text-info" style="font-size: 2rem;"></i>
+                                <h6 class="mt-2">Budgeting</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-money-bill-wave text-warning" style="font-size: 2rem;"></i>
+                                <h6 class="mt-2">Expenses</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-credit-card text-danger" style="font-size: 2rem;"></i>
+                                <h6 class="mt-2">Payments</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HRM Section -->
+            <div class="page-section" id="hrm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Human Resource Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
+                        <i class="fas fa-plus"></i> Add Employee
+                    </button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-users text-primary" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Employees</h5>
+                                <button class="btn btn-outline-primary" onclick="showEmployees()">Manage</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-money-check-alt text-success" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Payroll</h5>
+                                <button class="btn btn-outline-success" onclick="showPayroll()">Process</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-alt text-info" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Leave Management</h5>
+                                <button class="btn btn-outline-info" onclick="showLeaves()">Manage</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CRM Section -->
+            <div class="page-section" id="crm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>Customer Relationship Management</h3>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModal">
+                        <i class="fas fa-plus"></i> Add Customer
+                    </button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-users text-primary" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Customers</h5>
+                                <button class="btn btn-outline-primary" onclick="showCustomers()">Manage</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-quote-right text-success" style="font-size: 2rem;"></i>
+                                <h5 class="mt-3">Quotations</h5>
+                                <button class="btn btn-outline-success" onclick="showQuotations()">Manage</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>

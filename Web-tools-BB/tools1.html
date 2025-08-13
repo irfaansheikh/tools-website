@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tools - WebTools+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen pt-20 pb-32">
+
+    <!-- Fixed Header -->
+    <header class="bg-blue-600 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/49d91148-6538-455b-a576-5f3431788a6e.png" alt="Website logo" class="rounded-full">
+                    <h1 class="text-2xl font-bold">WebTools+</h1>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="index.html" class="font-medium hover:text-blue-200">Home</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">All Tools</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">Blogs</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">Games</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">About</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tool Categories -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto sticky top-20 bg-white z-40">
+            <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600" data-tab="ai-tools">AI Tools</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="calculators">Calculators</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="converters">Converters</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="developer-tools">Developer Tools</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="file-tools">File Tools</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="image-tools">Image Tools</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="pdf-tools">PDF Tools</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="generators">Generators</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="seo-tools">SEO Tools</button>
+            <button class="tab-btn px-4 py-2 font-medium text-gray-600" data-tab="text-tools">Text Tools</button>
+        </div>
+
+        <!-- AI Tools -->
+        <div id="ai-tools" class="tab-content active p-4">
+            <div class="flex border-b border-gray-200 mb-4 overflow-x-auto">
+                <button class="subtab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600" data-tab="ai-tools-chat">Chat AI</button>
+                <button class="subtab-btn px-4 py-2 font-medium text-gray-600" data-tab="ai-tools-image">Image AI</button>
+            </div>
+            
+            <div id="ai-tools-chat" class="subtab-content">
+                <h3 class="text-xl font-bold mb-4">Chat AI Tools</h3>
+                <p>Chat GPT style tools will go here</p>
+            </div>
+            
+            <div id="ai-tools-image" class="subtab-content hidden">
+                <h3 class="text-xl font-bold mb-4">Image AI Tools</h3>
+                <p>Image generation tools will go here</p>
+            </div>
+        </div>
+
+        <!-- Calculators -->
+        <div id="calculators" class="tab-content hidden p-4">
+            <h3 class="text-xl font-bold mb-4">Calculators</h3>
+            <p>Content for Calculators will go here.</p>
+        </div>
+
+        <!-- Converters -->
+        <div id="converters" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">Converters</h3>
+            <p>Content for Converters will go here.</p>
+        </div>
+
+        <!-- Developer Tools -->
+        <div id="developer-tools" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">Developer Tools</h3>
+            <p>Content for Developer Tools will go here.</p>
+        </div>
+
+        <!-- File Tools -->
+        <div id="file-tools" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">File Tools</h3>
+            <p>Content for File Tools will go here.</p>
+        </div>
+
+        <!-- Image Tools -->
+        <div id="image-tools" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">Image Tools</h3>
+            <p>Content for Image Tools will go here.</p>
+        </div>
+
+        <!-- PDF Tools -->
+        <div id="pdf-tools" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">PDF Tools</h3>
+            <p>Content for PDF Tools will go here.</p>
+        </div>
+
+        <!-- Generators -->
+        <div id="generators" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">Generators</h3>
+            <p>Content for Generators will go here.</p>
+        </div>
+
+        <!-- SEO Tools -->
+        <div id="seo-tools" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">SEO Tools</h3>
+            <p>Content for SEO Tools will go here.</p>
+        </div>
+
+        <!-- Text Tools -->
+        <div id="text-tools" class="tab-content hidden">
+            <h3 class="text-xl font-bold mb-4">Text Tools</h3>
+            <p>Content for Text Tools will go here.</p>
+        </div>
+    </div>
+
+    <!-- Fixed Footer -->
+    <footer class="bg-gray-800 text-white py-4 fixed bottom-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">WebTools+</h3>
+                    <p class="text-gray-400">All your essential web tools in one place, completely client-side.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">All Tools</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact</h4>
+                    <p class="text-gray-400">Have questions or suggestions?</p>
+                    <p class="text-blue-400 hover:text-blue-300 mt-2"><a href="mailto:contact@webtools.com">contact@webtools.com</a></p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-4 pt-4 text-center text-gray-400">
+                <p>© 2023 WebTools+. All tools run completely in your browser - no data is sent to any server.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Main Tab Switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Update active tab button
+                tabBtns.forEach(b => b.classList.remove('text-blue-600', 'border-blue-600'));
+                tabBtns.forEach(b => b.classList.add('text-gray-600'));
+                this.classList.add('text-blue-600', 'border-blue-600');
+                this.classList.remove('text-gray-600');
+                
+                // Show corresponding tab content
+                tabContents.forEach(content => content.classList.add('hidden'));
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+
+        // Nested Tab Switching
+        const subTabBtns = document.querySelectorAll('.subtab-btn');
+        const subTabContents = document.querySelectorAll('.subtab-content');
+
+        if (subTabBtns.length) {
+            subTabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    const parent = this.closest('.tab-content');
+                    
+                    parent.querySelectorAll('.subtab-btn').forEach(b => {
+                        b.classList.remove('text-blue-600', 'border-blue-600');
+                        b.classList.add('text-gray-600');
+                    });
+
+                    this.classList.add('text-blue-600', 'border-blue-600');
+                    this.classList.remove('text-gray-600');
+                    
+                    parent.querySelectorAll('.subtab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    document.getElementById(tabId).classList.remove('hidden');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

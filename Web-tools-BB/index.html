@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebTools+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen pt-20 pb-32"> /* 20 = header height, 32 = footer height */
+
+    <!-- Fixed Header -->
+    <header class="bg-blue-600 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/49d91148-6538-455b-a576-5f3431788a6e.png" alt="Website logo" class="rounded-full">
+                    <h1 class="text-2xl font-bold">WebTools+</h1>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="#" class="font-medium hover:text-blue-200">Home</a></li>
+                        <li><a href="tools.html" class="font-medium hover:text-blue-200">All Tools</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">Blogs</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">Games</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">About</a></li>
+                        <li><a href="#" class="font-medium hover:text-blue-200">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Homepage Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold mb-4">Welcome to WebTools+</h2>
+        <p class="text-xl mb-4">Your one-stop solution for all essential web tools. Explore our wide range of tools designed for developers, designers, and content creators.</p>
+        <p class="text-lg">Get started by navigating to the <a href="tools.html" class="text-blue-600 underline">All Tools</a> page.</p>
+    </main>
+
+    <!-- Fixed Footer -->
+    <footer class="bg-gray-800 text-white py-8 fixed bottom-0 left-0 right-0">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">WebTools+</h3>
+                    <p class="text-gray-400">All your essential web tools in one place, completely client-side.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="tools.html" class="text-gray-400 hover:text-white">All Tools</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact</h4>
+                    <p class="text-gray-400">Have questions or suggestions?</p>
+                    <p class="text-blue-400 hover:text-blue-300 mt-2"><a href="mailto:contact@webtools.com">contact@webtools.com</a></p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>© 2023 WebTools+. All tools run completely in your browser - no data is sent to any server.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
