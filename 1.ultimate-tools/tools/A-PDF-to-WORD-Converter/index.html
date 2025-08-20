@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PDF to Word Converter</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: #5256ad;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 40vh auto;
+        }
+
+        h1 {
+            text-align: center;
+            padding-bottom: 20px;
+            color: white;
+            font-size: 29px;
+            text-shadow: 1px 1px 1px black;
+        }
+
+        form {
+            text-align: center;
+
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+            background-color: white;
+            font-size: 20px;
+            border-radius: 10px;
+            width: 400px;
+            outline: none;
+            border: 2px dotted rgb(24, 173, 199);
+        }
+        
+        ::-webkit-file-upload-button {
+            cursor: pointer;
+            color: white;
+            background-color: rgb(24, 173, 199);
+            padding: 20px;
+            border: none;
+            border-radius: 10px 10 0px 10px;
+            outline: none;
+        }
+
+        ::-webkit-file-upload-button:hover{
+            background-color: rgb(255, 119, 0);
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            width: 400px;
+            height: 60px;
+            font-weight: 700;
+            color: rgb(24, 173, 199);
+            font-size: 30px;
+            text-align: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 7px;
+            border: 2px dotted rgb(24, 173, 199);
+            cursor: pointer;
+            outline: none;
+            text-shadow: 0px 1px black;
+
+        }
+
+        input[type="submit"]:hover{
+            background-color: rgb(255, 119, 0);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>PDF TO WORD CONVERTER</h1>
+        <form action="convert.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="pdfFile" accept=".pdf" required>
+            <br>
+            <input type="submit" value="Convert">
+        </form>
+    </div>
+</body>
+
+</html>
