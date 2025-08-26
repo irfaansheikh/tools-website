@@ -1,0 +1,330 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ToolBox: Your go-to platform for online tools, blogs, games, and more!">
+  <title>ToolBox - Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #F5FAFA; /* Soft White background */
+      color: #2D3748; /* Dark Slate text */
+    }
+    header {
+      background-color: #007A7A; /* Teal header */
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #F5FAFA;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+    }
+    .nav-links li a {
+      color: #F5FAFA;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+      color: #FF6F61; /* Coral hover */
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5em;
+      color: #F5FAFA;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #EDF2F7; /* Light Gray hero */
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 2.5em;
+      color: #007A7A;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.2em;
+      color: #718096; /* Slate Gray */
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
+      font-size: 2em;
+      color: #2D3748;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .tool-card h3 {
+      font-size: 1.5em;
+      color: #2D3748;
+    }
+    .tool-card p {
+      color: #718096; /* Slate Gray for descriptions */
+      margin: 10px 0;
+    }
+    .tool-card a {
+      color: #007A7A; /* Teal for links */
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .tool-card a:hover {
+      color: #FF6F61; /* Coral hover */
+    }
+    footer {
+      background-color: #007A7A; /* Teal footer */
+      padding: 20px;
+      color: #F5FAFA;
+    }
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 20px;
+    }
+    .footer-column h4 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .footer-column ul {
+      list-style: none;
+    }
+    .footer-column ul li a {
+      color: #F5FAFA;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+    .footer-column ul li a:hover {
+      opacity: 1;
+      color: #FF6F61; /* Coral hover */
+    }
+    .social-links {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .social-links a {
+      color: #F5FAFA;
+      margin: 0 10px;
+      font-size: 1.5em;
+      opacity: 0.8;
+    }
+    .social-links a:hover {
+      opacity: 1;
+      color: #FF6F61;
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #007A7A;
+        padding: 20px;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .hero h1 {
+        font-size: 2em;
+      }
+      .footer-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 480px) {
+      .footer-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">ToolBox</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="games.html">Games</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      </ul>
+      <div class="menu-toggle">☰</div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="hero">
+      <h1>Welcome to ToolBox</h1>
+      <p>Your one-stop platform for tools, blogs, games, and more!</p>
+    </div>
+    <div class="section">
+      <h2>Featured Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3>URL to QR Code Generator</h3>
+          <p>Create QR codes for any URL instantly.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Simple Interest Calculator</h3>
+          <p>Compute interest for loans or savings.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Image Resizer</h3>
+          <p>Resize images to custom dimensions easily.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="blogs.html">Blogs</a></li>
+          <li><a href="collection.html">Collection</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Components</h4>
+        <ul>
+          <li><a href="#">HTML, CSS, JS</a></li>
+          <li><a href="#">Python</a></li>
+          <li><a href="#">C#</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Useful Tools</h4>
+        <ul>
+          <li><a href="#">Case Converter</a></li>
+          <li><a href="#">JPG Converter</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Free Icons</h4>
+        <ul>
+          <li><a href="#">SVG</a></li>
+          <li><a href="#">Car SVG</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Category</h4>
+        <ul>
+          <li><a href="#">App</a></li>
+          <li><a href="#">Form</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="#">&#xf09a;</a> <!-- Facebook -->
+      <a href="#">&#xf16d;</a> <!-- Instagram -->
+      <a href="#">&#xf099;</a> <!-- Twitter/X -->
+      <a href="#">&#xf167;</a> <!-- YouTube -->
+    </div>
+  </footer>
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

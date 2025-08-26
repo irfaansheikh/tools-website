@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ToolBox: Log in to access premium features!">
+  <title>ToolBox - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #F5FAFA; /* Soft White background */
+      color: #2D3748; /* Dark Slate text */
+      position: relative;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: #1A1F2E; /* Deep Navy dark mode */
+      color: #F5FAFA;
+    }
+    header {
+      background-color: #007A7A; /* Teal header */
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #F5FAFA;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+    }
+    .nav-links li a {
+      color: #F5FAFA;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+      color: #FF6F61; /* Coral hover */
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5em;
+      color: #F5FAFA;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #EDF2F7; /* Light Gray hero */
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 2.5em;
+      color: #007A7A;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.2em;
+      color: #718096; /* Slate Gray */
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
+      font-size: 2em;
+      color: #2D3748;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .section h2.dark-mode {
+      color: #F5FAFA;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    }
+    .tool-card.dark-mode {
+      background-color: #2E3440; /* Charcoal Gray dark mode */
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .tool-card i {
+      font-size: 1.5em;
+      color: #007A7A;
+    }
+    .tool-card h3 {
+      font-size: 1.5em;
+      color: #2D3748;
+    }
+    .tool-card h3.dark-mode {
+      color: #F5FAFA;
+    }
+    .tool-card p {
+      color: #718096; /* Slate Gray for descriptions */
+      margin: 10px 0;
+      flex-grow: 1;
+    }
+    .tool-card p.dark-mode {
+      color: #D1D5DB;
+    }
+    .tool-card a {
+      color: #007A7A; /* Teal for links */
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .tool-card a.dark-mode {
+      color: #00C4B4; /* Teal variant for dark mode */
+    }
+    .tool-card a:hover {
+      color: #FF6F61; /* Coral hover */
+    }
+    .ad-placeholder {
+      background-color: #FF6F61; /* Coral for ad placeholders */
+      color: #F5FAFA;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    .modal-content {
+      background-color: #FFFFFF;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
+      position: relative;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .modal-content.dark-mode {
+      background-color: #2E3440;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #2D3748;
+    }
+    .close.dark-mode {
+      color: #F5FAFA;
+    }
+    footer {
+      background-color: #007A7A; /* Teal footer */
+      padding: 20px;
+      color: #F5FAFA;
+    }
+    .newsletter {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .newsletter h3 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .newsletter p {
+      font-size: 0.9em;
+      color: #D1D5DB;
+      margin-bottom: 10px;
+    }
+    .newsletter form {
+      display: inline-flex;
+      align-items: center;
+    }
+    .newsletter input {
+      padding: 10px;
+      width: 200px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+    }
+    .newsletter button {
+      padding: 10px 20px;
+      background-color: #FF6F61; /* Coral button */
+      border: none;
+      color: #F5FAFA;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .newsletter button:hover {
+      background-color: #E65B4D; /* Darker coral hover */
+    }
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 10px;
+    }
+    .footer-column h4 {
+      font-size: 1em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .footer-column ul {
+      list-style: none;
+    }
+    .footer-column ul li {
+      margin-bottom: 5px;
+    }
+    .footer-column ul li a {
+      color: #F5FAFA;
+      text-decoration: none;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+    .footer-column ul li a:hover {
+      opacity: 1;
+      color: #FF6F61; /* Coral hover */
+    }
+    .social-links {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .social-links a {
+      color: #F5FAFA;
+      margin: 0 10px;
+      font-size: 1.5em;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .social-links a:hover {
+      opacity: 1;
+      color: #FF6F61;
+    }
+    .scroll-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007A7A; /* Teal */
+      color: #F5FAFA;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: opacity 0.3s;
+    }
+    .scroll-top.show {
+      display: flex;
+    }
+    .scroll-top:hover {
+      background-color: #005F5F; /* Darker teal */
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #007A7A;
+      color: #F5FAFA;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .dark-mode-toggle:hover {
+      background-color: #005F5F;
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #007A7A;
+        padding: 20px;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .hero h1 {
+        font-size: 2em;
+      }
+      .footer-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .newsletter input {
+        width: 150px;
+      }
+      .scroll-top {
+        bottom: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+      }
+      .dark-mode-toggle {
+        top: 10px;
+        right: 10px;
+        padding: 8px 15px;
+      }
+    }
+    @media (max-width: 480px) {
+      .footer-columns {
+        grid-template-columns: 1fr;
+      }
+      .newsletter input {
+        width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">ToolBox</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="games.html">Games</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      </ul>
+      <div class="menu-toggle">☰</div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="hero">
+      <h1>Login</h1>
+      <p>Access your ToolBox account.</p>
+    </div>
+    <div class="section">
+      <form style="max-width: 400px; margin: 0 auto;">
+        <input type="email" placeholder="Email" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="password" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #FF6F61; color: #F5FAFA; border: none; border-radius: 4px;">Login</button>
+      </form>
+    </div>
+  </div>
+  <!-- Copy <footer> from blogs.html -->
+    <footer>
+    <div class="newsletter">
+      <h3>Get the latest news!</h3>
+      <p>Don't be shy. Say hi! Do you have a project or an idea that could use some help? Let's work together.</p>
+      <form onsubmit="return validateNewsletter(event)">
+        <input type="email" id="newsletter-email" placeholder="user@codewithfaraz.com" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="blogs.html">Blogs</a></li>
+          <li><a href="collection.html">Collection</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Components</h4>
+        <ul>
+          <li><a href="#">HTML, CSS, JS</a></li>
+          <li><a href="#">Python</a></li>
+          <li><a href="#">C#</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Useful Tools</h4>
+        <ul>
+          <li><a href="#">Case Converter</a></li>
+          <li><a href="#">JPG Converter</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Free Icons</h4>
+        <ul>
+          <li><a href="#">SVG</a></li>
+          <li><a href="#">Car SVG</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Category</h4>
+        <ul>
+          <li><a href="#">App</a></li>
+          <li><a href="#">Form</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
+  <button class="scroll-top" onclick="scrollToTop()">↑</button>
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  <div id="tool-demo-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Tool Demo</h2>
+      <div id="demo-content"></div>
+    </div>
+  </div>
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const scrollTopBtn = document.querySelector('.scroll-top');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollTopBtn.classList.add('show');
+      } else {
+        scrollTopBtn.classList.remove('show');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const elements = document.querySelectorAll('.section h2, .tool-card, .tool-card h3, .tool-card p, .tool-card a, .modal-content, .close');
+      elements.forEach(el => el.classList.toggle('dark-mode'));
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    }
+
+    // Load dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      toggleDarkMode();
+    }
+
+    function openModal(demoType) {
+      const modal = document.getElementById('tool-demo-modal');
+      const content = document.getElementById('demo-content');
+      modal.style.display = 'block';
+
+      if (demoType === 'tool-demo') {
+        content.innerHTML = `
+          <h3>URL to QR Code Generator Demo</h3>
+          <input type="text" id="demo-qr-input" placeholder="Enter URL" style="width: 100%; padding: 10px; margin: 10px 0;">
+          <button onclick="generateQRDemo()">Generate QR</button>
+          <canvas id="demo-qr-canvas" style="margin-top: 10px;"></canvas>
+          <h3>Simple Interest Calculator Demo</h3>
+          <input type="number" id="demo-principal" placeholder="Principal" style="width: 100%; padding: 10px; margin: 10px 0;">
+          <input type="number" id="demo-rate" placeholder="Rate (%)" style="width: 100%; padding: 10px; margin: 10px 0;">
+          <input type="number" id="demo-time" placeholder="Time (years)" style="width: 100%; padding: 10px; margin: 10px 0;">
+          <button onclick="calculateInterestDemo()">Calculate</button>
+          <p id="demo-interest-result" style="margin-top: 10px;"></p>
+        `;
+        // Load QRCode library dynamically
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
+        script.onload = () => {};
+        document.head.appendChild(script);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('tool-demo-modal').style.display = 'none';
+    }
+
+    function generateQRDemo() {
+      const url = document.getElementById('demo-qr-input').value;
+      const canvas = document.getElementById('demo-qr-canvas');
+      if (url && window.QRCode) {
+        canvas.innerHTML = '';
+        QRCode.toCanvas(canvas, url, { width: 150 }, (error) => {
+          if (error) console.error(error);
+        });
+      } else {
+        alert('Please enter a valid URL or wait for the library to load.');
+      }
+    }
+
+    function calculateInterestDemo() {
+      const principal = parseFloat(document.getElementById('demo-principal').value);
+      const rate = parseFloat(document.getElementById('demo-rate').value);
+      const time = parseFloat(document.getElementById('demo-time').value);
+      if (principal && rate && time) {
+        const interest = (principal * rate * time) / 100;
+        document.getElementById('demo-interest-result').textContent = `Simple Interest: $${interest.toFixed(2)}`;
+      } else {
+        alert('Please enter valid numbers.');
+      }
+    }
+
+    function validateNewsletter(event) {
+      event.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+      alert('Thank you for subscribing!');
+      document.getElementById('newsletter-email').value = '';
+      return false;
+    }
+
+    // Google Analytics placeholder (replace with your tracking ID)
+    // <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"></script>
+    // <script>
+    //   window.dataLayer = window.dataLayer || [];
+    //   function gtag(){dataLayer.push(arguments);}
+    //   gtag('js', new Date());
+    //   gtag('config', 'G-XXXXXX');
+    // </script>
+  </script>
+  <!-- Copy <script> from blogs.html (remove modal-related functions) -->
+</body>
+</html>

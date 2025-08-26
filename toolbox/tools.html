@@ -1,0 +1,620 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ToolBox: Explore our collection of online tools for images, PDFs, calculators, and more!">
+  <title>ToolBox - Tools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #F5FAFA; /* Soft White background */
+      color: #2D3748; /* Dark Slate text */
+      position: relative;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #007A7A; /* Teal header */
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #F5FAFA;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+    }
+    .nav-links li a {
+      color: #F5FAFA;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+      color: #FF6F61; /* Coral hover */
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5em;
+      color: #F5FAFA;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .search-bar {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .search-bar input {
+      padding: 10px;
+      width: 300px;
+      max-width: 100%;
+      border: 1px solid #718096;
+      border-radius: 4px;
+      outline: none;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
+      font-size: 2em;
+      color: #2D3748;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tool-card.hidden {
+      display: none;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .tool-card i {
+      font-size: 1.5em;
+      color: #007A7A;
+    }
+    .tool-card h3 {
+      font-size: 1.5em;
+      color: #2D3748;
+    }
+    .tool-card p {
+      color: #718096; /* Slate Gray for descriptions */
+      margin: 10px 0;
+      flex-grow: 1;
+    }
+    .tool-card a {
+      color: #007A7A; /* Teal for links */
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .tool-card a:hover {
+      color: #FF6F61; /* Coral hover */
+    }
+    .ad-placeholder {
+      background-color: #FF6F61; /* Coral for ad placeholders */
+      color: #F5FAFA;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    footer {
+      background-color: #007A7A; /* Teal footer */
+      padding: 20px;
+      color: #F5FAFA;
+    }
+    .newsletter {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .newsletter h3 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .newsletter p {
+      font-size: 0.9em;
+      color: #D1D5DB;
+      margin-bottom: 10px;
+    }
+    .newsletter form {
+      display: inline-flex;
+      align-items: center;
+    }
+    .newsletter input {
+      padding: 10px;
+      width: 200px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+    }
+    .newsletter button {
+      padding: 10px 20px;
+      background-color: #FF6F61; /* Coral button */
+      border: none;
+      color: #F5FAFA;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .newsletter button:hover {
+      background-color: #E65B4D; /* Darker coral hover */
+    }
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 10px;
+    }
+    .footer-column h4 {
+      font-size: 1em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .footer-column ul {
+      list-style: none;
+    }
+    .footer-column ul li {
+      margin-bottom: 5px;
+    }
+    .footer-column ul li a {
+      color: #F5FAFA;
+      text-decoration: none;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+    .footer-column ul li a:hover {
+      opacity: 1;
+      color: #FF6F61; /* Coral hover */
+    }
+    .social-links {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .social-links a {
+      color: #F5FAFA;
+      margin: 0 10px;
+      font-size: 1.5em;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .social-links a:hover {
+      opacity: 1;
+      color: #FF6F61;
+    }
+    .scroll-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007A7A; /* Teal */
+      color: #F5FAFA;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: opacity 0.3s;
+    }
+    .scroll-top.show {
+      display: flex;
+    }
+    .scroll-top:hover {
+      background-color: #005F5F; /* Darker teal */
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #007A7A;
+        padding: 20px;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .search-bar input {
+        width: 100%;
+      }
+      .footer-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .newsletter input {
+        width: 150px;
+      }
+      .scroll-top {
+        bottom: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+      }
+    }
+    @media (max-width: 480px) {
+      .footer-columns {
+        grid-template-columns: 1fr;
+      }
+      .newsletter input {
+        width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">ToolBox</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="games.html">Games</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      </ul>
+      <div class="menu-toggle">☰</div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="tool-search" placeholder="Search tools..." oninput="searchTools()">
+    </div>
+    <!-- Image Tools -->
+    <div class="section">
+      <h2>Image Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <i class="fas fa-image"></i>
+          <h3>Image Converter</h3>
+          <p>Convert images between formats like PNG, JPG, and more.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-compress"></i>
+          <h3>Resize Image to 20KB</h3>
+          <p>Reduce image size to 20KB without losing quality.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-file-image"></i>
+          <h3>JPEG Image Compressor</h3>
+          <p>Compress JPEG images for faster web loading.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-expand-arrows-alt"></i>
+          <h3>Image Resizer</h3>
+          <p>Resize images to custom dimensions easily.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-images"></i>
+          <h3>All-in-One Image Compressor</h3>
+          <p>Compress multiple image formats in one go.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    <!-- Ad Placeholder -->
+    <div class="ad-placeholder">
+      <p>Ad Space - Coming Soon (Late July 2025)</p>
+    </div>
+    <!-- PDF Tools -->
+    <div class="section">
+      <h2>PDF Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <i class="fas fa-file-pdf"></i>
+          <h3>PDF to JPG, PNG, WEBP Converter</h3>
+          <p>Convert PDF pages to various image formats.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-stamp"></i>
+          <h3>PDF Watermark Maker</h3>
+          <p>Add custom watermarks to your PDF documents.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-cut"></i>
+          <h3>PDF Splitter Tool</h3>
+          <p>Split large PDFs into smaller files.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-compress-alt"></i>
+          <h3>Merge PDF Tool</h3>
+          <p>Combine multiple PDFs into a single document.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-file-archive"></i>
+          <h3>Convert PDF to ZIP</h3>
+          <p>Compress PDFs into ZIP archives.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-file-word"></i>
+          <h3>PDF to Doc Converter</h3>
+          <p>Convert PDFs to editable Word documents.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    <!-- Calculators -->
+    <div class="section">
+      <h2>Calculators</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <i class="fas fa-calculator"></i>
+          <h3>Fiverr Fee & PayPal Calculator</h3>
+          <p>Calculate net earnings after fees.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>SIP & Lumpsum Calculator</h3>
+          <p>Plan investments with SIP or lumpsum options.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-money-bill-wave"></i>
+          <h3>AdSense Revenue Calculator</h3>
+          <p>Estimate your AdSense earnings.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-percent"></i>
+          <h3>Simple & Compound Interest Calculator</h3>
+          <p>Compute interest for loans or savings.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-piggy-bank"></i>
+          <h3>Advanced PPF Calculator</h3>
+          <p>Calculate returns on Public Provident Fund investments.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    <!-- Ad Placeholder -->
+    <div class="ad-placeholder">
+      <p>Ad Space - Coming Soon (Late July 2025)</p>
+    </div>
+    <!-- Other Tools -->
+    <div class="section">
+      <h2>Other Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <i class="fas fa-qrcode"></i>
+          <h3>URL to QR Code Generator</h3>
+          <p>Create QR codes for any URL instantly.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-link"></i>
+          <h3>URL Shortener</h3>
+          <p>Shorten long URLs for easy sharing.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Article Prompt Generator</h3>
+          <p>Generate creative prompts for articles.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-shield-alt"></i>
+          <h3>Privacy Policy Generator</h3>
+          <p>Create custom privacy policies for websites.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-file-alt"></i>
+          <h3>Terms and Conditions Generator</h3>
+          <p>Generate terms for your website or app.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <i class="fas fa-video"></i>
+          <h3>Terabox Video Player</h3>
+          <p>Play videos directly from Terabox links.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="newsletter">
+      <h3>Get the latest news!</h3>
+      <p>Don't be shy. Say hi! Do you have a project or an idea that could use some help? Let's work together.</p>
+      <form onsubmit="return validateNewsletter(event)">
+        <input type="email" id="newsletter-email" placeholder="user@codewithfaraz.com" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="blogs.html">Blogs</a></li>
+          <li><a href="collection.html">Collection</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Components</h4>
+        <ul>
+          <li><a href="#">HTML, CSS, JS</a></li>
+          <li><a href="#">Python</a></li>
+          <li><a href="#">C#</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Useful Tools</h4>
+        <ul>
+          <li><a href="#">Case Converter</a></li>
+          <li><a href="#">JPG Converter</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Free Icons</h4>
+        <ul>
+          <li><a href="#">SVG</a></li>
+          <li><a href="#">Car SVG</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Category</h4>
+        <ul>
+          <li><a href="#">App</a></li>
+          <li><a href="#">Form</a></li>
+          <li><a href="#">View More</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
+  <button class="scroll-top" onclick="scrollToTop()">↑</button>
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const scrollTopBtn = document.querySelector('.scroll-top');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollTopBtn.classList.add('show');
+      } else {
+        scrollTopBtn.classList.remove('show');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function searchTools() {
+      const query = document.getElementById('tool-search').value.toLowerCase();
+      const cards = document.querySelectorAll('.tool-card');
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(query)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    function validateNewsletter(event) {
+      event.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+      alert('Thank you for subscribing!');
+      document.getElementById('newsletter-email').value = '';
+      return false;
+    }
+  </script>
+</body>
+</html>

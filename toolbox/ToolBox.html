@@ -1,0 +1,366 @@
+which do you recommend as i want a simple website which contains everything like tools and blogs and games and management systems and many other stuff which will be added once this idea works but right now suggest a good color pallet which will go long term and helpful to achieve SEO and monitization of the website after 60-90 days and also there should be a home page and where all pages are on the header, tools and blogs and games and login and signup and all pages have same header and footer and footer s expanded like 5 columns and under social links are there like in the image attached for footer. 
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolBox - Online Tools Collection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #1e90ff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.5em;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+    }
+    .tool-card h3 {
+      font-size: 1.5em;
+      color: #333;
+    }
+    .tool-card p {
+      color: #666;
+      margin: 10px 0;
+    }
+    .tool-card a {
+      color: #1e90ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .tool-card a:hover {
+      text-decoration: underline;
+    }
+    #qr-tool {
+      display: none;
+      margin-top: 20px;
+    }
+    #qr-tool input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #qr-tool button {
+      padding: 10px 20px;
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #qr-tool button:hover {
+      background-color: #1c86ee;
+    }
+    #qr-canvas {
+      margin-top: 10px;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8em;
+      }
+      .container {
+        padding: 10px;
+      }
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ToolBox</h1>
+    <p>Your one-stop collection of online tools to simplify life!</p>
+  </header>
+  <div class="container">
+    <!-- Image Tools -->
+    <div class="section">
+      <h2>Image Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3>Image Converter</h3>
+          <p>Convert images between formats like PNG, JPG, and more.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Resize Image to 20KB</h3>
+          <p>Reduce image size to 20KB without losing quality.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>JPEG Image Compressor</h3>
+          <p>Compress JPEG images for faster web loading.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Image Resizer</h3>
+          <p>Resize images to custom dimensions easily.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>All-in-One Image Compressor</h3>
+          <p>Compress multiple image formats in one go.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    <!-- PDF Tools -->
+    <div class="section">
+      <h2>PDF Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3>PDF to JPG, PNG, WEBP Converter</h3>
+          <p>Convert PDF pages to various image formats.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>PDF Watermark Maker</h3>
+          <p>Add custom watermarks to your PDF documents.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>PDF Splitter Tool</h3>
+          <p>Split large PDFs into smaller files.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Merge PDF Tool</h3>
+          <p>Combine multiple PDFs into a single document.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Convert PDF to ZIP</h3>
+          <p>Compress PDFs into ZIP archives.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>PDF to Doc Converter</h3>
+          <p>Convert PDFs to editable Word documents.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    <!-- Calculators -->
+    <div class="section">
+      <h2>Calculators</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3>Fiverr Fee & PayPal Calculator</h3>
+          <p>Calculate net earnings after fees.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>SIP & Lumpsum Calculator</h3>
+          <p>Plan investments with SIP or lumpsum options.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>AdSense Revenue Calculator</h3>
+          <p>Estimate your AdSense earnings.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Simple & Compound Interest Calculator</h3>
+          <p>Compute interest for loans or savings.</p>
+          <a href="#" onclick="showInterestCalculator()">Use Tool</a>
+          <div id="interest-calculator" style="display: none;">
+  <input type="number" id="principal" placeholder="Enter principal amount">
+  <input type="number" id="rate" placeholder="Enter interest rate (%)">
+  <input type="number" id="time" placeholder="Enter time (years)">
+  <button onclick="calculateInterest()">Calculate</button>
+  <p id="interest-result"></p>
+</div>
+<script>
+  function showInterestCalculator() {
+    document.getElementById('interest-calculator').style.display = 'block';
+    document.querySelectorAll('.section').forEach(section => {
+      if (!section.contains(document.getElementById('interest-calculator'))) {
+        section.style.display = 'none';
+      }
+    });
+  }
+  function calculateInterest() {
+    const principal = parseFloat(document.getElementById('principal').value);
+    const rate = parseFloat(document.getElementById('rate').value);
+    const time = parseFloat(document.getElementById('time').value);
+    if (principal && rate && time) {
+      const interest = (principal * rate * time) / 100;
+      document.getElementById('interest-result').textContent = `Simple Interest: $${interest.toFixed(2)}`;
+    } else {
+      alert('Please enter valid numbers');
+    }
+  }
+</script>
+        </div>
+        <div class="tool-card">
+          <h3>Advanced PPF Calculator</h3>
+          <p>Calculate returns on Public Provident Fund investments.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    <!-- Other Tools -->
+    <div class="section">
+      <h2>Other Tools</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3>URL to QR Code Generator</h3>
+          <p>Create QR codes for any URL instantly.</p>
+          <a href="#" onclick="showQrTool()">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>URL Shortener</h3>
+          <p>Shorten long URLs for easy sharing.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Article Prompt Generator</h3>
+          <p>Generate creative prompts for articles.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Privacy Policy Generator</h3>
+          <p>Create custom privacy policies for websites.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Terms and Conditions Generator</h3>
+          <p>Generate terms for your website or app.</p>
+          <a href="#">Use Tool</a>
+        </div>
+        <div class="tool-card">
+          <h3>Terabox Video Player</h3>
+          <p>Play videos directly from Terabox links.</p>
+          <a href="#">Use Tool</a>
+        </div>
+      </div>
+      <!-- QR Code Tool -->
+      <div id="qr-tool">
+        <input type="text" id="qr-input" placeholder="Enter URL to generate QR code">
+        <button onclick="generateQR()">Generate QR Code</button>
+        <canvas id="qr-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2025 ToolBox. All rights reserved.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script>
+    function showQrTool() {
+      document.getElementById('qr-tool').style.display = 'block';
+      document.querySelectorAll('.section').forEach(section => {
+        if (!section.contains(document.getElementById('qr-tool'))) {
+          section.style.display = 'none';
+        }
+      });
+    }
+
+    function generateQR() {
+      const url = document.getElementById('qr-input').value;
+      const canvas = document.getElementById('qr-canvas');
+      if (url) {
+        canvas.innerHTML = ''; // Clear previous QR code
+        QRCode.toCanvas(canvas, url, { width: 200 }, (error) => {
+          if (error) console.error(error);
+        });
+      } else {
+        alert('Please enter a valid URL');
+      }
+    }
+  </script>
+</body>
+</html>
